@@ -33,7 +33,7 @@ mkdir /mnt/arch-install-xps9300
 rsync -avh ./ /mnt/arch-install-xps9300
 
 echo "\n==> Executing local installation script\n"
-arch-chroot /mnt /install/arch-xps9300-local.install $3 $4
+arch-chroot /mnt /arch-install-xps9300/arch-xps9300-local.install $3 $4
 
 # Reboot
 #reboot
