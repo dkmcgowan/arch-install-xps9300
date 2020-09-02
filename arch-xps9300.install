@@ -13,7 +13,7 @@ if [ "$#" -ne 4 ]; then
   exit 1
 fi
 
-read "response?All data will be lost, perform a fresh install? (y/n) " -n 1 -r
+read "response?All data will be lost, perform a fresh install? (y/n) "
 echo
 if [[ ! $response =~ ^[Yy]$ ]]
 then
