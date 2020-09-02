@@ -11,7 +11,7 @@ iwctl --passphrase $2 station wlan0 connect $1
 echo "Updating the system clock..."
 timedatectl set-ntp true
 
-echo "Fornatting the partitions..."
+echo "Formatting the partitions..."
 mkfs.ext4 /dev/nvme0n1p3
 mkswap /dev/nvme0n1p2
 swapon /dev/nvme0n1p2
