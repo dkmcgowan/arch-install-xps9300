@@ -52,5 +52,5 @@ gsettings set org.cinnamon.desktop.interface gtk-theme "Mint-Y-Dark-Blue"
 gsettings set org.cinnamon.desktop.wm.preferences theme "Mint-Y-Dark"
 gsettings set org.cinnamon.desktop.interface icon-theme "Mint-Y-Dark-Blue"
 
-echo "\n==> Exiting system\n"
-exit
+#echo "\n==> Exiting system\n"
+#exit
