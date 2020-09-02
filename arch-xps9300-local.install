@@ -34,15 +34,15 @@ su $2 -c "mkdir /home/$2/packages"
 cd /home/$2/packages
 
 su $2 -c "git clone https://aur.archlinux.org/lightdm-slick-greeter.git"
-su $2 -c "git clone https://aur.archlinux.org/xviewer.git"
-su $2 -c "git clone https://aur.archlinux.org/xplayer.git"
-su $2 -c "git clone https://aur.archlinux.org/pix.git"
 su $2 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
 su $2 -c "git clone https://aur.archlinux.org/mint-themes.git"
 su $2 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
 su $2 -c "git clone https://aur.archlinux.org/mint-x-icons.git"
 su $2 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
 su $2 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
+#su $2 -c "git clone https://aur.archlinux.org/xviewer.git"
+#su $2 -c "git clone https://aur.archlinux.org/xplayer.git"
+#su $2 -c "git clone https://aur.archlinux.org/pix.git"
 
 find . -maxdepth 1 -type d \( ! -name . \) -exec zsh -c "cd '{}' && su $2 -c \"makepkg -sri --noconfirm\"" \;
 
