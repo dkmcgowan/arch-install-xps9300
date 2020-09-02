@@ -22,21 +22,21 @@ echo "\n==> Installing additional packages\n"
 pacman -S xorg lightdm blueberry cheese cinnamon system-config-printer gnome-keyring firefox imagemagick gnome-terminal nemo networkmanager xed xreader --noconfirm
 
 echo "\n==> Installing AUR packages\n"
-mkdir /home/$2/packages
+su $2 -c "mkdir /home/$2/packages"
 cd /home/$2/packages
 
-git clone https://aur.archlinux.org/lightdm-slick-greeter.git
-git clone https://aur.archlinux.org/xviewer.git
-git clone https://aur.archlinux.org/xplayer.git
-git clone https://aur.archlinux.org/pix.git
-git clone https://aur.archlinux.org/mint-artwork-cinnamon.git
-git clone https://aur.archlinux.org/mint-themes.git
-git clone https://aur.archlinux.org/mint-y-icons.git
-git clone https://aur.archlinux.org/mint-x-icons.git
-git clone https://aur.archlinux.org/libfprint-tod-git.git
-git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git
+su $2 -c "git clone https://aur.archlinux.org/lightdm-slick-greeter.git"
+su $2 -c "git clone https://aur.archlinux.org/xviewer.git"
+su $2 -c "git clone https://aur.archlinux.org/xplayer.git"
+su $2 -c "git clone https://aur.archlinux.org/pix.git"
+su $2 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
+su $2 -c "git clone https://aur.archlinux.org/mint-themes.git"
+su $2 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
+su $2 -c "git clone https://aur.archlinux.org/mint-x-icons.git"
+su $2 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
+su $2 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
 
-find . -maxdepth 1 -type d \( ! -name . \) -exec zsh -c "cd '{}' && makepkg -sri --noconfirm" \;
+find . -maxdepth 1 -type d \( ! -name . \) -exec zsh -c "cd '{}' && su dmcgowan -c \"makepkg -sri --noconfirm\"" \;
 
 echo "\n==> Enabling services\n"
 systemctl enable lightdm.service
