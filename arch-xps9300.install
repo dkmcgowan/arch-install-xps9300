@@ -5,29 +5,29 @@ if [ "$#" -ne 4 ]; then
   exit 1
 fi
 
-echo "Connecting to the internet..."
+echo "\n==> Connecting to internet\n"
 iwctl --passphrase $2 station wlan0 connect $1
 
-echo "Updating the system clock..."
+echo "\n==> Updating system clock\n"
 timedatectl set-ntp true
 
-echo "Formatting the partitions..."
+echo "\n==> Formatting partitions\n"
 mkfs.ext4 /dev/nvme0n1p3
 mkswap /dev/nvme0n1p2
 swapon /dev/nvme0n1p2
 
-echo "Mounting the file systems..."
+echo "\n==> Mounting file systems\n"
 mount /dev/nvme0n1p3 /mnt
 mkdir /mnt/efi
 mount /dev/nvme0n1p1 /mnt/efi
 
-echo "Installing base packages..."
-pacstrap /mnt base linux linux-firmware bind-tools dhcpcd dosfstools exfatprogs f2fs-tools git gptfdisk grml-zsh-config grub efibootmgr intel-ucode iwd lvm2 man-db man-pages nmap neofetch nvme-cli openssh openvpn parted reflector rsync sudo terminus-font usbutils vi vim zsh systemd htop tlp i7z glances base-devel curl visudo
+echo "\n==> Installing base packages\n"
+pacstrap /mnt base linux linux-firmware bind-tools dhcpcd dosfstools exfatprogs f2fs-tools git gptfdisk grml-zsh-config grub efibootmgr intel-ucode iwd lvm2 man-db man-pages nmap neofetch nvme-cli openssh openvpn parted reflector rsync sudo terminus-font usbutils vi vim zsh systemd htop tlp i7z glances base-devel curl
 
-echo "Generating fstab..."
+echo "\n==>Generating fstab\n"
 genfstab -U /mnt >> /mnt/etc/fstab
 
-echo "Copying installation files..."
+echo "\n==>Copying installation files\n"
 mkdir /mnt/install
 mkdir /mnt/install/etc
 
@@ -44,7 +44,7 @@ cp ./etc/pam.d/lightdm /mnt/install/etc/pam.d/lightdm
 cp ./etc/pam.d/sudo /mnt/install/etc/pam.d/sudo
 cp ./etc/pam.d/system-local-login /mnt/install/etc/pam.d/system-local-login
 
-echo "Executing local installation script..."
+echo "\n==>Executing local installation script\n"
 arch-chroot /mnt /install/arch-xps9300-local.install $3 $4
 
 # Reboot
