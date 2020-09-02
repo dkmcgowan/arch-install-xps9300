@@ -36,35 +36,7 @@ git clone https://aur.archlinux.org/mint-x-icons.git
 git clone https://aur.archlinux.org/libfprint-tod-git.git
 git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git
 
-cd /home/$2/packages/lightdm-slick-greeter
-makepkg -sri --noconfirm
-
-cd /home/$2/packages/xviewer
-makepkg -sri --noconfirm
-
-cd /home/$2/packages/xplayer
-makepkg -sri --noconfirm
-
-cd /home/$2/packages/pix
-makepkg -sri --noconfirm
-
-cd /home/$2/packages/mint-artwork-cinnamon
-makepkg -sri --noconfirm
-
-cd /home/$2/packages/mint-themes
-makepkg -sri --noconfirm
-
-cd /home/$2/packages/mint-y-icons
-makepkg -sri --noconfirm
-
-cd /home/$2/packages/mint-x-icons
-makepkg -sri --noconfirm
-
-cd /home/$2/packages/libfprint-tod-git
-makepkg -sri --noconfirm
-
-cd /home/$2/packages/libfprint-2-tod1-xps9300-bin
-makepkg -sri --noconfirm
+find . -maxdepth 1 -type d \( ! -name . \) -exec zsh -c "cd '{}' && makepkg -sri --noconfirm" \;
 
 echo "\n==> Enabling services\n"
 systemctl enable lightdm.service
@@ -72,11 +44,7 @@ systemctl enable NetworkManager.service
 systemctl enable tlp.service
 
 echo "\n==> Copying configuration files\n"
-cp /install/etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf
-cp /install/etc/pam.d/cinnamon-screensaver /etc/pam.d/cinnamon-screensaver
-cp /install/etc/pam.d/lightdm /etc/pam.d/lightdm
-cp /install/etc/pam.d/sudo /etc/pam.d/sudo
-cp /install/etc/pam.d/system-local-login /etc/pam.d/system-local-login
+rsync -avh /arch-install-xps9300/etc/ /etc/
 
 echo "\n==> Setting desktop theme\n"
 gsettings set org.cinnamon.theme name "Mint-Y-Dark-Blue"
