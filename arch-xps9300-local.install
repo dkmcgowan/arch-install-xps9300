@@ -18,10 +18,18 @@ echo "Complete user information"
 useradd -m -G wheel -s /bin/zsh $2
 echo $2:$3 | chpasswd
 
+echo "\n==> Modifying sudoers file\n"
+# make sudo prompt not timeout
+echo "Defaults passwd_timeout=0" | EDITOR="tee -a" visudo
+
+# make new user not require sudo password so makepkg can work
+echo "$2 ALL=(ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
+
 echo "\n==> Installing additional packages\n"
 pacman -S xorg lightdm blueberry cheese cinnamon system-config-printer gnome-keyring firefox imagemagick gnome-terminal nemo networkmanager xed xreader --noconfirm
 
 echo "\n==> Installing AUR packages\n"
+# su all commands to run as the new user
 su $2 -c "mkdir /home/$2/packages"
 cd /home/$2/packages
 
