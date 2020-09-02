@@ -24,27 +24,15 @@ mount /dev/nvme0n1p1 /mnt/efi
 echo "\n==> Installing base packages\n"
 pacstrap /mnt base linux linux-firmware bind-tools dhcpcd dosfstools exfatprogs f2fs-tools git gptfdisk grml-zsh-config grub efibootmgr intel-ucode iwd lvm2 man-db man-pages nmap neofetch nvme-cli openssh openvpn parted reflector rsync sudo terminus-font usbutils vi vim zsh systemd htop tlp i7z glances base-devel curl
 
-echo "\n==>Generating fstab\n"
+echo "\n==> Generating fstab\n"
 genfstab -U /mnt >> /mnt/etc/fstab
 
-echo "\n==>Copying installation files\n"
-mkdir /mnt/install
-mkdir /mnt/install/etc
+echo "\n==> Copying installation files\n"
+chmod +x ./arch-xps9300-local.install
+mkdir /mnt/arch-install-xps9300
+rsync -avh ./ /mnt/arch-install-xps9300
 
-cp arch-xps9300-local.install /mnt/install/arch-xps9300-local.install
-cp ./etc/locale.gen /mnt/etc/locale.gen
-cp ./etc/locale.conf /mnt/etc/locale.conf
-cp ./etc/hostname /mnt/etc/hostname
-cp ./etc/hosts /mnt/etc/hosts
-cp ./etc/vconsole.conf /mnt/etc/vconsole.conf
-
-cp ./etc/lightdm/lightdm.conf /mnt/install/etc/lightdm/lightdm.conf
-cp ./etc/pam.d/cinnamon-screensaver /mnt/install/etc/pam.d/cinnamon-screensaver
-cp ./etc/pam.d/lightdm /mnt/install/etc/pam.d/lightdm
-cp ./etc/pam.d/sudo /mnt/install/etc/pam.d/sudo
-cp ./etc/pam.d/system-local-login /mnt/install/etc/pam.d/system-local-login
-
-echo "\n==>Executing local installation script\n"
+echo "\n==> Executing local installation script\n"
 arch-chroot /mnt /install/arch-xps9300-local.install $3 $4
 
 # Reboot
