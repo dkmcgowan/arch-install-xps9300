@@ -4,9 +4,6 @@ echo "\n==> Setting local timezone\n"
 ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
 hwclock --systohc
 
-echo "\n==> Generating localization file\n"
-locale.gen
-
 echo "\n==> Generating initramfs\n"
 mkinitcpio -P
 
@@ -49,6 +46,9 @@ systemctl enable tlp.service
 
 echo "\n==> Copying configuration files\n"
 rsync -avh /arch-install-xps9300/etc/ /etc/
+
+echo "\n==> Generating localization file\n"
+locale.gen
 
 echo "\n==> Setting desktop theme\n"
 su $2 -c "gsettings set org.cinnamon.theme name \"Mint-Y-Dark-Blue\""
