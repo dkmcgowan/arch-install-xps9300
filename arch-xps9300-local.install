@@ -1,28 +1,27 @@
 #!/bin/zsh
 
-# Time zone
+echo "Setting local timezone..."
 ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
 hwclock --systohc
 
-# Localization
+echo "Generating localization file..."
 locale.gen
 
-# Initramfs
+echo "Generating initramfs..."
 mkinitcpio -P
 
-# Root password
+echo "Setting root password..."
 #echo root:$1 | chpasswd
-echo "Set the root password"
 passwd
 
-# Create user
+echo "Creating system user..."
 echo "Complete user information"
 useradd -m -G wheel -s /bin/zsh $2
 
-# Install LightDM
+echo "Installing additional packages..."
 pacman -S xorg lightdm blueberry cheese cinnamon system-config-printer gnome-keyring firefox imagemagick gnome-terminal nemo networkmanager xed xreader --noconfirm
 
-# Download and install AUR packages
+echo "Downloading and installing AUR packages..."
 mkdir /home/$2/packages
 cd /home/$2/packages
 
@@ -67,22 +66,23 @@ makepkg -sri --noconfirm
 cd /home/$2/packages/libfprint-2-tod1-xps9300-bin
 makepkg -sri --noconfirm
 
-# Enable Services
+echo "Enabling services..."
 systemctl enable lightdm.service
 systemctl enable NetworkManager.service
+systemctl enable tlp.service
 
-# Copy configuration files
+echo "Copying configuration files..."
 cp /install/etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf
 cp /install/etc/pam.d/cinnamon-screensaver /etc/pam.d/cinnamon-screensaver
 cp /install/etc/pam.d/lightdm /etc/pam.d/lightdm
 cp /install/etc/pam.d/sudo /etc/pam.d/sudo
 cp /install/etc/pam.d/system-local-login /etc/pam.d/system-local-login
 
-# Set theme
+echo "Setting desktop theme..."
 gsettings set org.cinnamon.theme name "Mint-Y-Dark-Blue"
 gsettings set org.cinnamon.desktop.interface gtk-theme "Mint-Y-Dark-Blue"
 gsettings set org.cinnamon.desktop.wm.preferences theme "Mint-Y-Dark"
 gsettings set org.cinnamon.desktop.interface icon-theme "Mint-Y-Dark-Blue"
 
-# Exit chroot
+echo "Exiting system..."
 exit
