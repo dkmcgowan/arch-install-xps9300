@@ -1,27 +1,27 @@
 #!/bin/zsh
 
-echo "Setting local timezone..."
+echo "\n==> Setting local timezone\n"
 ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
 hwclock --systohc
 
-echo "Generating localization file..."
+echo "\n==> Generating localization file\n"
 locale.gen
 
-echo "Generating initramfs..."
+echo "\n==> Generating initramfs\n"
 mkinitcpio -P
 
-echo "Setting root password..."
+echo "\n==> Setting root password\n"
 #echo root:$1 | chpasswd
 passwd
 
-echo "Creating system user..."
+echo "\n==> Creating system user\n"
 echo "Complete user information"
 useradd -m -G wheel -s /bin/zsh $2
 
-echo "Installing additional packages..."
+echo "\n==> Installing additional packages\n"
 pacman -S xorg lightdm blueberry cheese cinnamon system-config-printer gnome-keyring firefox imagemagick gnome-terminal nemo networkmanager xed xreader --noconfirm
 
-echo "Downloading and installing AUR packages..."
+echo "\n==> Installing AUR packages\n"
 mkdir /home/$2/packages
 cd /home/$2/packages
 
@@ -66,23 +66,23 @@ makepkg -sri --noconfirm
 cd /home/$2/packages/libfprint-2-tod1-xps9300-bin
 makepkg -sri --noconfirm
 
-echo "Enabling services..."
+echo "\n==> Enabling services\n"
 systemctl enable lightdm.service
 systemctl enable NetworkManager.service
 systemctl enable tlp.service
 
-echo "Copying configuration files..."
+echo "\n==> Copying configuration files\n"
 cp /install/etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf
 cp /install/etc/pam.d/cinnamon-screensaver /etc/pam.d/cinnamon-screensaver
 cp /install/etc/pam.d/lightdm /etc/pam.d/lightdm
 cp /install/etc/pam.d/sudo /etc/pam.d/sudo
 cp /install/etc/pam.d/system-local-login /etc/pam.d/system-local-login
 
-echo "Setting desktop theme..."
+echo "\n==> Setting desktop theme\n"
 gsettings set org.cinnamon.theme name "Mint-Y-Dark-Blue"
 gsettings set org.cinnamon.desktop.interface gtk-theme "Mint-Y-Dark-Blue"
 gsettings set org.cinnamon.desktop.wm.preferences theme "Mint-Y-Dark"
 gsettings set org.cinnamon.desktop.interface icon-theme "Mint-Y-Dark-Blue"
 
-echo "Exiting system..."
+echo "\n==> Exiting system\n"
 exit
