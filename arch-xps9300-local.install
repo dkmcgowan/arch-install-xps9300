@@ -36,7 +36,7 @@ su $2 -c "git clone https://aur.archlinux.org/mint-x-icons.git"
 su $2 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
 su $2 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
 
-find . -maxdepth 1 -type d \( ! -name . \) -exec zsh -c "cd '{}' && su dmcgowan -c \"makepkg -sri --noconfirm\"" \;
+find . -maxdepth 1 -type d \( ! -name . \) -exec zsh -c "cd '{}' && su $2 -c \"makepkg -sri --noconfirm\"" \;
 
 echo "\n==> Enabling services\n"
 systemctl enable lightdm.service
