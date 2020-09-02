@@ -39,9 +39,6 @@ su $2 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
 su $2 -c "git clone https://aur.archlinux.org/mint-x-icons.git"
 su $2 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
 su $2 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
-#su $2 -c "git clone https://aur.archlinux.org/xviewer.git"
-#su $2 -c "git clone https://aur.archlinux.org/xplayer.git"
-#su $2 -c "git clone https://aur.archlinux.org/pix.git"
 
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $2 -c \"makepkg -sri --noconfirm\"" \;
 
@@ -54,7 +51,11 @@ echo "\n==> Copying configuration files\n"
 rsync -avh /arch-install-xps9300/etc/ /etc/
 
 echo "\n==> Setting desktop theme\n"
-gsettings set org.cinnamon.theme name "Mint-Y-Dark-Blue"
-gsettings set org.cinnamon.desktop.interface gtk-theme "Mint-Y-Dark-Blue"
-gsettings set org.cinnamon.desktop.wm.preferences theme "Mint-Y-Dark"
-gsettings set org.cinnamon.desktop.interface icon-theme "Mint-Y-Dark-Blue"
+su $2 -c "gsettings set org.cinnamon.theme name \"Mint-Y-Dark-Blue\""
+su $2 -c "gsettings set org.cinnamon.desktop.interface gtk-theme \"Mint-Y-Dark-Blue\""
+su $2 -c "gsettings set org.cinnamon.desktop.wm.preferences theme \"Mint-Y-Dark\""
+su $2 -c "gsettings set org.cinnamon.desktop.interface icon-theme \"Mint-Y-Dark-Blue\""
+
+echo "\n==> Setting up GRUB\n"
+grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
