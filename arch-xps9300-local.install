@@ -11,12 +11,12 @@ echo "\n==> Generating initramfs\n"
 mkinitcpio -P
 
 echo "\n==> Setting root password\n"
-#echo root:$1 | chpasswd
-passwd
+echo root:$1 | chpasswd
 
 echo "\n==> Creating system user\n"
 echo "Complete user information"
 useradd -m -G wheel -s /bin/zsh $2
+echo $2:$3 | chpasswd
 
 echo "\n==> Installing additional packages\n"
 pacman -S xorg lightdm blueberry cheese cinnamon system-config-printer gnome-keyring firefox imagemagick gnome-terminal nemo networkmanager xed xreader --noconfirm
