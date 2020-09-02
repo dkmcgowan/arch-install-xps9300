@@ -1,5 +1,4 @@
 #!/bin/zsh
-
 set -e
 
 # keep track of the last executed command
@@ -51,5 +50,5 @@ rsync -avh ./ /mnt/arch-install-xps9300/
 echo "\n==> Executing local installation script\n"
 arch-chroot /mnt /arch-install-xps9300/arch-xps9300-local.install $3 $4 $5
 
-# Reboot
+echo "\n==> Reboot\n"
 #reboot
