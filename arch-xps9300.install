@@ -8,8 +8,8 @@ trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 # echo an error message before exiting
 trap 'echo "\"${last_command}\" command filed with exit code $?."' EXIT
 
-if [ "$#" -ne 4 ]; then
-  echo "Usage: $0 [ssid] [passphrase] [root_password] [username]" >&2
+if [ "$#" -ne 5 ]; then
+  echo "Usage: $0 [ssid] [passphrase] [root_password] [username] [password]" >&2
   exit 1
 fi
 
@@ -49,7 +49,7 @@ mkdir /mnt/arch-install-xps9300
 rsync -avh ./ /mnt/arch-install-xps9300/
 
 echo "\n==> Executing local installation script\n"
-arch-chroot /mnt /arch-install-xps9300/arch-xps9300-local.install $3 $4
+arch-chroot /mnt /arch-install-xps9300/arch-xps9300-local.install $3 $4 $5
 
 # Reboot
 #reboot
