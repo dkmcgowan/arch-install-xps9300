@@ -1,1 +1,51 @@
 #!/bin/zsh
+
+if [ "$#" -ne 4 ]; then
+  echo "Usage: $0 [ssid] [passphrase] [root_password] [username]" >&2
+  exit 1
+fi
+
+# Connect to the internet
+iwctl --passphrase $2 station wlan0 connect $1
+
+# Update the system clock
+timedatectl set-ntp true
+
+# Format the partitions
+mkfs.ext4 /dev/nvme0n1p3
+mkswap /dev/nvme0n1p2
+swapon /dev/nvme0n1p2
+
+# Mount the file systems
+mkdir /mnt/efi
+mount /dev/nvme0n1p3 /mnt
+mount /dev/nvme0n1p1 /mnt/efi
+
+# Install base, not laptop specific except for intel-ucode
+pacstrap /mnt base linux linux-firmware bind-tools dhcpcd dosfstools exfatprogs f2fs-tools git gptfdisk grml-zsh-config grub efibootmgr intel-ucode iwd lvm2 man-db man-pages nmap neofetch nvme-cli openssh openvpn parted reflector rsync sudo terminus-font usbutils vi vim zsh systemd htop tlp i7z glances base-devel curl visudo
+
+# Generate fstab
+genfstab -U /mnt >> /mnt/etc/fstab
+
+# Copy installation files
+mkdir /mnt/install
+mkdir /mnt/install/etc
+
+cp arch-xps9300-local.install /mnt/install/arch-xps9300-local.install
+cp ./etc/locale.gen /mnt/etc/locale.gen
+cp ./etc/locale.conf /mnt/etc/locale.conf
+cp ./etc/hostname /mnt/etc/hostname
+cp ./etc/hosts /mnt/etc/hosts
+cp ./etc/vconsole.conf /mnt/etc/vconsole.conf
+
+cp ./etc/lightdm/lightdm.conf /mnt/install/etc/lightdm/lightdm.conf
+cp ./etc/pam.d/cinnamon-screensaver /mnt/install/etc/pam.d/cinnamon-screensaver
+cp ./etc/pam.d/lightdm /mnt/install/etc/pam.d/lightdm
+cp ./etc/pam.d/sudo /mnt/install/etc/pam.d/sudo
+cp ./etc/pam.d/system-local-login /mnt/install/etc/pam.d/system-local-login
+
+# Execute local installation script
+arch-chroot /mnt /install/arch-xps9300-local.install $3 $4
+
+# Reboot
+reboot

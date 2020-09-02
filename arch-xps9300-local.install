@@ -1,0 +1,88 @@
+#!/bin/zsh
+
+# Time zone
+ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
+hwclock --systohc
+
+# Localization
+locale.gen
+
+# Initramfs
+mkinitcpio -P
+
+# Root password
+#echo root:$1 | chpasswd
+echo "Set the root password"
+passwd
+
+# Create user
+echo "Complete user information"
+useradd -m -G wheel -s /bin/zsh $2
+
+# Install LightDM
+pacman -S xorg lightdm blueberry cheese cinnamon system-config-printer gnome-keyring firefox imagemagick gnome-terminal nemo networkmanager xed xreader --noconfirm
+
+# Download and install AUR packages
+mkdir /home/$2/packages
+cd /home/$2/packages
+
+git clone https://aur.archlinux.org/lightdm-slick-greeter.git
+git clone https://aur.archlinux.org/xviewer.git
+git clone https://aur.archlinux.org/xplayer.git
+git clone https://aur.archlinux.org/pix.git
+git clone https://aur.archlinux.org/mint-artwork-cinnamon.git
+git clone https://aur.archlinux.org/mint-themes.git
+git clone https://aur.archlinux.org/mint-y-icons.git
+git clone https://aur.archlinux.org/mint-x-icons.git
+git clone https://aur.archlinux.org/libfprint-tod-git.git
+git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git
+
+cd /home/$2/packages/lightdm-slick-greeter
+makepkg -sri --noconfirm
+
+cd /home/$2/packages/xviewer
+makepkg -sri --noconfirm
+
+cd /home/$2/packages/xplayer
+makepkg -sri --noconfirm
+
+cd /home/$2/packages/pix
+makepkg -sri --noconfirm
+
+cd /home/$2/packages/mint-artwork-cinnamon
+makepkg -sri --noconfirm
+
+cd /home/$2/packages/mint-themes
+makepkg -sri --noconfirm
+
+cd /home/$2/packages/mint-y-icons
+makepkg -sri --noconfirm
+
+cd /home/$2/packages/mint-x-icons
+makepkg -sri --noconfirm
+
+cd /home/$2/packages/libfprint-tod-git
+makepkg -sri --noconfirm
+
+cd /home/$2/packages/libfprint-2-tod1-xps9300-bin
+makepkg -sri --noconfirm
+
+# Enable Services
+systemctl enable lightdm.service
+systemctl enable NetworkManager.service
+
+# Copy configuration files
+cp /install/etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf
+cp /install/etc/pam.d/cinnamon-screensaver /etc/pam.d/cinnamon-screensaver
+cp /install/etc/pam.d/lightdm /etc/pam.d/lightdm
+cp /install/etc/pam.d/sudo /etc/pam.d/sudo
+cp /install/etc/pam.d/system-local-login /etc/pam.d/system-local-login
+
+# Set theme
+gsettings set org.cinnamon.theme name "Mint-Y-Dark-Blue"
+gsettings set org.cinnamon.desktop.interface gtk-theme "Mint-Y-Dark-Blue"
+gsettings set org.cinnamon.desktop.wm.preferences theme "Mint-Y-Dark"
+gsettings set org.cinnamon.desktop.interface icon-theme "Mint-Y-Dark-Blue"
+
+# Exit chroot
+exit
