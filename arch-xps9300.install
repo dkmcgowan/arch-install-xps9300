@@ -12,12 +12,13 @@ echo "\n==> Updating system clock\n"
 timedatectl set-ntp true
 
 echo "\n==> Formatting partitions\n"
-mkfs.ext4 /dev/nvme0n1p3
+mkfs.ext4 -F /dev/nvme0n1p3
 mkswap /dev/nvme0n1p2
 swapon /dev/nvme0n1p2
 
 echo "\n==> Mounting file systems\n"
 mount /dev/nvme0n1p3 /mnt
+
 mkdir /mnt/efi
 mount /dev/nvme0n1p1 /mnt/efi
 
