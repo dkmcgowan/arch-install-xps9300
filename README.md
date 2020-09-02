@@ -1,7 +1,7 @@
 # arch-install-xps9300
 Arch install scripts for Dell XPS 9300
 
-- iwctl station wlan0 connect <ssid>
+- iwctl station wlan0 connect [ssid]
 - pacman -Sy git
 - git clone https://github.com/dkmcgowan/arch-install-xps9300
 
