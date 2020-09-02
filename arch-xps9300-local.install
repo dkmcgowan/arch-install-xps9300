@@ -21,7 +21,6 @@ echo $2:$3 | chpasswd
 echo "\n==> Modifying sudoers file\n"
 # make sudo prompt not timeout
 echo "Defaults passwd_timeout=0" | EDITOR="tee -a" visudo
-
 # make new user not require sudo password so makepkg can work
 echo "$2 ALL=(ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
 
