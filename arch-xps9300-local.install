@@ -21,6 +21,7 @@ echo "Defaults passwd_timeout=0" | EDITOR="tee -a" visudo
 # make new user not require sudo password so makepkg can work
 echo "$2 ALL=(ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
 
+#check for other packages to include, image viewer, media player, vlc, gimp, handbrake
 echo "\n==> Installing additional packages\n"
 pacman -S xorg lightdm blueberry cheese cinnamon system-config-printer gnome-keyring firefox imagemagick gnome-terminal nemo networkmanager xed xreader ttf-dejavu --noconfirm
 
@@ -67,6 +68,7 @@ pacmd set-sink-volume 0 33000
 pacmd set-source-volume 1 42500
 #looking for way to set "sounds volume"
 
+#find good background and add to repo, update path
 su $2 -c "gsettings set org.cinnamon.desktop.background picture-uri 'file:///usr/share/backgrounds/linuxmint-qiana/j_baer_5976503592.jpg'"
 su $2 -c "gsettings set org.cinnamon.desktop.background picture-options 'centered'"
 
@@ -77,6 +79,12 @@ su $2 -c "gsettings set org.nemo.desktop home-icon-visible true"
 su $2 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ visible-name 'default'"
 su $2 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-columns 120"
 su $2 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-rows 28"
+
+#add setting screen brightness
+#connect network manager wifi
+#notification settings default
+#run add fingerprint
+#lock computer when asleep setting
 
 echo "\n==> Setting up GRUB\n"
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
