@@ -78,7 +78,7 @@ su $2 -c "gsettings set org.cinnamon.desktop.interface icon-theme \"Mint-Y-Dark-
 #su $2 -c "gsettings set org.cinnamon.sounds switch-enabled false"
 
 ##### Touchpad/mouse settings.
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad natural-scroll false"
+su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad natural-scroll false"
 #su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad scroll-method two-finger-scrolling"
 #su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad motion-acceleration 5.4820717131474108"
 #su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad horiz-scroll-enabled false"
