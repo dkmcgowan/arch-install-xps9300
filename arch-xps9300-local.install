@@ -33,7 +33,7 @@ su $2 -c "git clone https://aur.archlinux.org/lightdm-slick-greeter.git"
 su $2 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
 su $2 -c "git clone https://aur.archlinux.org/mint-themes.git"
 su $2 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
-su $2 -c "git clone https://aur.archlinux.org/mint-x-icons.git"
+#su $2 -c "git clone https://aur.archlinux.org/mint-x-icons.git"
 su $2 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
 su $2 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
 
