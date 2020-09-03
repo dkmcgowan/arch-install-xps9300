@@ -70,6 +70,10 @@ pacmd set-source-volume 1 42500
 su $2 -c "gsettings set org.cinnamon.desktop.background picture-uri 'file:///usr/share/backgrounds/linuxmint-qiana/j_baer_5976503592.jpg'"
 su $2 -c "gsettings set org.cinnamon.desktop.background picture-options 'centered'"
 
+su $2 -c "gsettings set org.nemo.desktop computer-icon-visible true"
+su $2 -c "gsettings set org.nemo.desktop trash-icon-visible true"
+su $2 -c "gsettings set org.nemo.desktop home-icon-visible true"
+
 echo "\n==> Setting up GRUB\n"
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 grub-mkfont -s 30 -o /boot/grubfont.pf2 /usr/share/fonts/TTF/DejaVuSansMono.ttf
