@@ -51,12 +51,20 @@ echo "\n==> Generating localization file\n"
 locale.gen
 
 echo "\n==> Customizing settings\n"
-##### Desktop settings.
-#su $2 -c "gsettings set org.cinnamon.desktop.wm.preferences num-workspaces 2"
 su $2 -c "gsettings set org.cinnamon.theme name \"Mint-Y-Dark-Blue\""
 su $2 -c "gsettings set org.cinnamon.desktop.interface gtk-theme \"Mint-Y-Dark-Blue\""
 su $2 -c "gsettings set org.cinnamon.desktop.wm.preferences theme \"Mint-Y-Dark\""
 su $2 -c "gsettings set org.cinnamon.desktop.interface icon-theme \"Mint-Y-Dark-Blue\""
+
+su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad clickpad-click 2"
+su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad tap-to-click false"
+su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad natural-scroll false"
+su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad custom-acceleration true"
+su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad motion-acceleration 9.3245436105476678"
+su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad horizontal-scrolling true"
+
+##### Desktop settings.
+#su $2 -c "gsettings set org.cinnamon.desktop.wm.preferences num-workspaces 2"
 #su $2 -c "gsettings set org.cinnamon.desktop.background picture-uri file:///usr/share/backgrounds/linuxmint-qiana/j_baer_5976503592.jpg"
 #su $2 -c "gsettings set org.cinnamon.desktop.background color-shading-type solid"
 #su $2 -c "gsettings set org.cinnamon.desktop.background picture-options zoom"
@@ -77,16 +85,6 @@ su $2 -c "gsettings set org.cinnamon.desktop.interface icon-theme \"Mint-Y-Dark-
 #su $2 -c "gsettings set org.cinnamon.sounds plug-enabled false"
 #su $2 -c "gsettings set org.cinnamon.sounds switch-enabled false"
 
-##### Touchpad/mouse settings.
-su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad natural-scroll false"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad scroll-method two-finger-scrolling"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad motion-acceleration 5.4820717131474108"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad horiz-scroll-enabled false"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad two-finger-click 3"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad disable-while-typing true"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad three-finger-click 2"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad motion-threshold 2"
-
 ##### Power settings.
 #su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power button-power interactive"
 #su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power sleep-inactive-ac-timeout 0"
@@ -98,9 +96,6 @@ su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad natura
 #su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power idle-brightness 30"
 #su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power sleep-display-ac 600"
 #su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power sleep-display-battery 600"
-
-##### Default terminal
-#su $2 -c "gsettings set org/cinnamon/desktop/applications/terminal/exec /usr/bin/terminator"
 
 ##### Nemo
 #su $2 -c "gsettings set org.nemo.preferences show-hidden-files true"
