@@ -33,7 +33,6 @@ su $2 -c "git clone https://aur.archlinux.org/lightdm-slick-greeter.git"
 su $2 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
 su $2 -c "git clone https://aur.archlinux.org/mint-themes.git"
 su $2 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
-#su $2 -c "git clone https://aur.archlinux.org/mint-x-icons.git"
 su $2 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
 su $2 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
 
@@ -51,10 +50,10 @@ echo "\n==> Generating localization file\n"
 locale.gen
 
 echo "\n==> Customizing settings\n"
-su $2 -c "gsettings set org.cinnamon.theme name \"Mint-Y-Dark-Blue\""
-su $2 -c "gsettings set org.cinnamon.desktop.interface gtk-theme \"Mint-Y-Dark-Blue\""
-su $2 -c "gsettings set org.cinnamon.desktop.wm.preferences theme \"Mint-Y-Dark\""
-su $2 -c "gsettings set org.cinnamon.desktop.interface icon-theme \"Mint-Y-Dark-Blue\""
+su $2 -c "gsettings set org.cinnamon.theme name 'Mint-Y-Dark-Blue'"
+su $2 -c "gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark-Blue'"
+su $2 -c "gsettings set org.cinnamon.desktop.wm.preferences theme 'Mint-Y-Dark'"
+su $2 -c "gsettings set org.cinnamon.desktop.interface icon-theme 'Mint-Y-Dark-Blue'"
 
 su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad clickpad-click 2"
 su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad tap-to-click false"
@@ -67,53 +66,8 @@ pacmd set-sink-volume 0 33000
 pacmd set-source-volume 1 42500
 #looking for way to set "sounds volume"
 
-##### Desktop settings.
-#su $2 -c "gsettings set org.cinnamon.desktop.wm.preferences num-workspaces 2"
-#su $2 -c "gsettings set org.cinnamon.desktop.background picture-uri file:///usr/share/backgrounds/linuxmint-qiana/j_baer_5976503592.jpg"
-#su $2 -c "gsettings set org.cinnamon.desktop.background color-shading-type solid"
-#su $2 -c "gsettings set org.cinnamon.desktop.background picture-options zoom"
-#su $2 -c "gsettings set org.cinnamon.desktop.background.slideshow image-source xml:///usr/share/cinnamon-background-properties/linuxmint-qiana.xml"
-#su $2 -c "gsettings set org.cinnamon startup-animation false"
-#su $2 -c "gsettings set org.cinnamon desktop-effects false"
-#su $2 -c "gsettings set org.cinnamon desklet-decorations 0"
-#su $2 -c "gsettings set org.cinnamon enabled-desklets ['clock@cinnamon.org:0:150:0']"
-#su $2 -c "gsettings set org.cinnamon panels-resizable ['1:true']"
-#su $2 -c "gsettings set org.cinnamon panels-height ['1:33']"
-#su $2 -c "gsettings set org.cinnamon.desktop.interface clock-show-date true"
-
-##### Sound settings.
-#su $2 -c "gsettings set org.cinnamon.sounds login-enabled false"
-#su $2 -c "gsettings set org.cinnamon.sounds logout-enabled false"
-#su $2 -c "gsettings set org.cinnamon.sounds unplug-enabled false"
-#su $2 -c "gsettings set org.cinnamon.sounds tile-enabled false"
-#su $2 -c "gsettings set org.cinnamon.sounds plug-enabled false"
-#su $2 -c "gsettings set org.cinnamon.sounds switch-enabled false"
-
-##### Power settings.
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power button-power interactive"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power sleep-inactive-ac-timeout 0"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power critical-battery-action hibernate"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power idle-dim-time 90"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power sleep-inactive-battery-timeout 0"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power lid-close-ac-action nothing"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power lid-close-battery-action nothing"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power idle-brightness 30"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power sleep-display-ac 600"
-#su $2 -c "gsettings set org.cinnamon.settings-daemon.plugins.power sleep-display-battery 600"
-
-##### Nemo
-#su $2 -c "gsettings set org.nemo.preferences show-hidden-files true"
-#su $2 -c "gsettings set org.nemo.preferences show-image-thumbnails never"
-#su $2 -c "gsettings set org.nemo.preferences show-full-path-titles true"
-#su $2 -c "gsettings set org.nemo.preferences quick-renames-with-pause-in-between true"
-#su $2 -c "gsettings set org.nemo.preferences show-advanced-permissions true"
-#su $2 -c "gsettings set org.nemo.preferences show-home-icon-toolbar true"
-#su $2 -c "gsettings set org.nemo.preferences show-new-folder-icon-toolbar true"
-#su $2 -c "gsettings set org.nemo.preferences show-compact-view-icon-toolbar false"
-#su $2 -c "gsettings set org.nemo.preferences show-icon-view-icon-toolbar false"
-#su $2 -c "gsettings set org.nemo.preferences show-list-view-icon-toolbar false"
-#su $2 -c "gsettings set org.nemo.preferences show-open-in-terminal-toolbar true"
-#su $2 -c "gsettings set org.nemo.list-view default-visible-columns ['name', 'size', 'type', 'date_modified', 'owner', 'permissions']"
+su $2 -c "gsettings set org.cinnamon.desktop.background picture-uri 'file:///usr/share/backgrounds/linuxmint-qiana/j_baer_5976503592.jpg'"
+su $2 -c "gsettings set org.cinnamon.desktop.background picture-options 'centered'"
 
 echo "\n==> Setting up GRUB\n"
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
