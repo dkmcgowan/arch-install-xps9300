@@ -63,6 +63,10 @@ su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad custom
 su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad motion-acceleration 9.3245436105476678"
 su $2 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad horizontal-scrolling true"
 
+pacmd set-sink-volume 0 33000
+pacmd set-source-volume 1 42500
+#looking for way to set "sounds volume"
+
 ##### Desktop settings.
 #su $2 -c "gsettings set org.cinnamon.desktop.wm.preferences num-workspaces 2"
 #su $2 -c "gsettings set org.cinnamon.desktop.background picture-uri file:///usr/share/backgrounds/linuxmint-qiana/j_baer_5976503592.jpg"
