@@ -59,3 +59,4 @@ su $2 -c "gsettings set org.cinnamon.desktop.interface icon-theme \"Mint-Y-Dark-
 echo "\n==> Setting up GRUB\n"
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
+grub-mkfont -s 30 -o /boot/grub/grubfont.pf2 /usr/share/fonts/TTF/DejaVuSansMono.ttf
