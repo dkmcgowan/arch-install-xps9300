@@ -12,11 +12,11 @@ if [ "$#" -ne 5 ]; then
   exit 1
 fi
 
-read "response?All data will be lost, perform a fresh install? (y/n) "
+read "response?:: Proceed with installation? [Y/n] "
 echo
-if [[ ! $response =~ ^[Yy]$ ]]
+if [[ ! $response =~ ^[Yy ]$ ]]
 then
-    exit 1
+  exit 1
 fi
 
 echo "\n==> Connecting to internet\n"
@@ -50,5 +50,10 @@ rsync -avh ./ /mnt/arch-install-xps9300/
 echo "\n==> Executing local installation script\n"
 arch-chroot /mnt /arch-install-xps9300/arch-xps9300-local.install $3 $4 $5
 
-echo "\n==> Reboot\n"
-#reboot
+read "response?:: Reboot system? [Y/n] "
+echo
+if [[ ! $response =~ ^[Yy ]$ ]]
+then
+  reboot
+  exit 1
+fi
