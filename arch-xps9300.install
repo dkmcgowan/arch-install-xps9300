@@ -1,10 +1,7 @@
 #!/bin/zsh
 set -e
 
-# keep track of the last executed command
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
-
-# echo an error message before exiting
 trap 'echo "\"${last_command}\" command filed with exit code $?."' EXIT
 
 if [ "$#" -ne 5 ]; then
@@ -19,35 +16,35 @@ then
   exit 1
 fi
 
-echo "\n==> Connecting to internet\n"
+echo "\n:: Connecting to internet...\n"
 iwctl --passphrase $2 station wlan0 connect $1
 
-echo "\n==> Updating system clock\n"
+echo "\n:: Updating system clock...\n"
 timedatectl set-ntp true
 
-echo "\n==> Formatting partitions\n"
+echo "\n:: Formatting partitions...\n"
 mkfs.ext4 -F /dev/nvme0n1p3
 mkswap /dev/nvme0n1p2
 swapon /dev/nvme0n1p2
 
-echo "\n==> Mounting file systems\n"
+echo "\n:: Mounting file systems...\n"
 mount /dev/nvme0n1p3 /mnt
 
 mkdir /mnt/efi
 mount /dev/nvme0n1p1 /mnt/efi
 
-echo "\n==> Installing base packages\n"
+echo "\n:: Installing base packages...\n"
 pacstrap /mnt base linux linux-firmware bind-tools dhcpcd dosfstools exfatprogs f2fs-tools git gptfdisk grml-zsh-config grub efibootmgr intel-ucode iwd lvm2 man-db man-pages nmap neofetch nvme-cli openssh openvpn parted reflector rsync sudo terminus-font usbutils vi vim zsh systemd htop tlp i7z glances base-devel curl s-tui pacutils fprintd
 
-echo "\n==> Generating fstab\n"
+echo "\n:: Generating fstab...\n"
 genfstab -U /mnt >> /mnt/etc/fstab
 
-echo "\n==> Copying installation files\n"
+echo "\n:: Copying installation files...\n"
 chmod +x ./arch-xps9300-local.install
 mkdir /mnt/arch-install-xps9300
 rsync -avh ./ /mnt/arch-install-xps9300/
 
-echo "\n==> Executing local installation script\n"
+echo "\n:: Executing local installation script...\n"
 arch-chroot /mnt /arch-install-xps9300/arch-xps9300-local.install $3 $4 $5
 
 read "response?:: Reboot system? [Y/n] "
