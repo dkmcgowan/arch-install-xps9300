@@ -39,6 +39,9 @@ su $2 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
 
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $2 -c \"makepkg -sri --noconfirm\"" \;
 
+echo "\n:: Installing fprintd...\n"
+pacman -Syu fprintd
+
 echo "\n:: Enabling services...\n"
 systemctl enable lightdm.service
 systemctl enable NetworkManager.service
