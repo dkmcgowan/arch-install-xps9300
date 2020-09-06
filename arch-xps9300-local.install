@@ -27,7 +27,7 @@ pacman -Syu xorg lightdm cinnamon blueberry nemo networkmanager gnome-keyring xe
 
 #check for other packages to include, image viewer, media player, vlc, gimp, handbrake
 echo "\n==> Installing additional packages\n"
-pacman -Syu cheese firefox eog gnome-terminal simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 bluez bluez-utils ttf-dejavu imagemagick --noconfirm
+pacman -Syu cheese firefox eog gnome-terminal gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 bluez bluez-utils ttf-dejavu imagemagick --noconfirm
 
 echo "\n==> Installing AUR packages\n"
 # su all commands to run as the new user
