@@ -1,37 +1,32 @@
 #!/bin/zsh
 
-echo "\n==> Setting local timezone\n"
+echo "\n:: Setting local timezone...\n"
 ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
 hwclock --systohc
 
-echo "\n==> Generating initramfs\n"
+echo "\n:: Generating initramfs...\n"
 mkinitcpio -P
 
-echo "\n==> Setting root password\n"
+echo "\n:: Setting root password...\n"
 echo root:$1 | chpasswd
 
-echo "\n==> Creating system user\n"
-echo "Complete user information"
+echo "\n:: Creating system user...\n"
 useradd -m -G wheel lp rfkill log adm sys systemd-journal uucp -s /bin/zsh $2
 echo $2:$3 | chpasswd
 
-echo "\n==> Modifying sudoers file\n"
-# make sudo prompt not timeout
+echo "\n:: Modifying sudoers file...\n"
 echo "Defaults passwd_timeout=0" | EDITOR="tee -a" visudo
-# make new user not require sudo password so makepkg can work
-echo "$2 ALL=(ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
+echo "$2 ALL=(ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo # needed for makepkg to work in this script
 
-#check for other packages to include, image viewer, media player, vlc, gimp, handbrake
-echo "\n==> Installing additional packages\n"
+echo "\n:: Installing Cinnamon and LightDM...\n"
 pacman -Syu xorg lightdm cinnamon blueberry nemo nemo-share xed xreader system-config-printer --noconfirm
+#echo "\n:: Installing GNOME and GDM...\n"
 #pacman -Syu xorg gdm gedit evince gnome-backgrounds gnome-control-center gnome-documents gnome-session gnome-settings-daemon gnome-shell gnome-shell-extensions gnome-software mutter nautilus nautilus-share sushi --noconfirm
 
-#check for other packages to include, image viewer, media player, vlc, gimp, handbrake
-echo "\n==> Installing additional packages\n"
+echo "\n:: Installing additional packages...\n"
 pacman -Syu cheese firefox baobab file-roller eog networkmanager gnome-remote-desktop gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 bluez bluez-utils ttf-dejavu imagemagick --noconfirm
 
-echo "\n==> Installing AUR packages\n"
-# su all commands to run as the new user
+echo "\n:: Installing AUR packages...\n"
 su $2 -c "mkdir /home/$2/packages"
 cd /home/$2/packages
 
@@ -44,25 +39,25 @@ su $2 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
 
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $2 -c \"makepkg -sri --noconfirm\"" \;
 
-echo "\n==> Enabling services\n"
+echo "\n:: Enabling services...\n"
 systemctl enable lightdm.service
 systemctl enable NetworkManager.service
 systemctl enable tlp.service
 systemctl enable bluetooth.service
 systemctl enable org.cups.cupsd.service
 
-echo "\n==> Adding printer\n"
+echo "\n:: Adding printer...\n"
 systemctl start org.cups.cupsd.service
 #see if the ip is really needed
 hp-setup -ia 10.135.1.25
 
-echo "\n==> Copying configuration files\n"
+echo "\n:: Copying configuration files...\n"
 rsync -avh /arch-install-xps9300/etc/ /etc/
 
-echo "\n==> Generating localization file\n"
+echo "\n:: Generating localization file...\n"
 locale.gen
 
-echo "\n==> Customizing settings\n"
+echo "\n:: Customizing desktop...\n"
 su $2 -c "gsettings set org.cinnamon.theme name 'Mint-Y-Dark-Blue'"
 su $2 -c "gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark-Blue'"
 su $2 -c "gsettings set org.cinnamon.desktop.wm.preferences theme 'Mint-Y-Dark'"
@@ -95,19 +90,20 @@ su $2 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-rows
 #add setting screen brightness
 #connect network manager wifi
 #notification settings default
-#run add fingerprint
 #lock computer when asleep setting
 #see what image viewer to install
 #vscode and connections
 #remminna connections
 #set date format
-#set zoom in firefox to 80%
 #install dropbox for nemo
 #1password firefox plugin
 #test and add things for hibernation (see if we want to default to hybrid)
 #organize bottom dock with apps and update settings here
 
-echo "\n==> Setting up GRUB\n"
+echo "\n:: Setting up GRUB..\n"
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 grub-mkfont -s 30 -o /boot/grubfont.pf2 /usr/share/fonts/TTF/DejaVuSansMono.ttf
 grub-mkconfig -o /boot/grub/grub.cfg
+
+echo "\n:: Set up fingerprint..\n"
+fprintd-enroll
