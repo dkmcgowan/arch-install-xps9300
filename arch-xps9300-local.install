@@ -23,7 +23,11 @@ echo "$2 ALL=(ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
 
 #check for other packages to include, image viewer, media player, vlc, gimp, handbrake
 echo "\n==> Installing additional packages\n"
-pacman -S xorg lightdm blueberry cheese cinnamon system-config-printer gnome-keyring firefox imagemagick gnome-terminal nemo networkmanager xed xreader ttf-dejavu simple-scan vlc gimp vscode remmina libreoffice-still handbrake dconf-editor hplip python-pyqt5 rhythmbox bluez bluez-utils --noconfirm
+pacman -Syu xorg cinnamon lightdm blueberry --noconfirm
+
+#check for other packages to include, image viewer, media player, vlc, gimp, handbrake
+echo "\n==> Installing additional packages\n"
+pacman -Syu cheese system-config-printer gnome-keyring firefox imagemagick gnome-terminal nemo networkmanager xed xreader ttf-dejavu simple-scan vlc gimp vscode remmina libreoffice-still handbrake dconf-editor hplip python-pyqt5 rhythmbox bluez bluez-utils --noconfirm
 
 echo "\n==> Installing AUR packages\n"
 # su all commands to run as the new user
