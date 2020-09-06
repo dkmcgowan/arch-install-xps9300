@@ -37,6 +37,10 @@ su $2 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
 su $2 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
 su $2 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
 
+su $2 -c "gpg --keyserver pool.sks-keyservers.net --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E"
+su $2 -c "git clone https://aur.archlinux.org/dropbox.git"
+su $2 -c "git clone https://aur.archlinux.org/nemo-dropbox.git"
+
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $2 -c \"makepkg -sri --noconfirm\"" \;
 
 echo "\n:: Installing fprintd...\n"
@@ -81,6 +85,8 @@ pacmd set-source-volume 1 42500
 #find good background and add to repo, update path
 su $2 -c "gsettings set org.cinnamon.desktop.background picture-uri 'file:///usr/share/backgrounds/linuxmint-qiana/j_baer_5976503592.jpg'"
 su $2 -c "gsettings set org.cinnamon.desktop.background picture-options 'centered'"
+su $2 -c "gsettings set org.cinnamon.desktop.interface clock-use-24h false"
+su $2 -c "gsettings set org.cinnamon.desktop.sceensaver lock-enabled true"
 
 su $2 -c "gsettings set org.nemo.desktop computer-icon-visible true"
 su $2 -c "gsettings set org.nemo.desktop trash-icon-visible true"
@@ -91,17 +97,13 @@ su $2 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-colu
 su $2 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-rows 28"
 
 #add setting screen brightness
-#connect network manager wifi
-#notification settings default
-#lock computer when asleep setting
-#see what image viewer to install
-#vscode and connections
+#connect network manager wifi (decide if disable notifications)
+#vscode connections
 #remminna connections
-#set date format
-#install dropbox for nemo
 #1password firefox plugin
 #test and add things for hibernation (see if we want to default to hybrid)
 #organize bottom dock with apps and update settings here
+#setup online account
 
 echo "\n:: Setting up GRUB..\n"
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
