@@ -23,8 +23,8 @@ echo "$2 ALL=(ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
 
 #check for other packages to include, image viewer, media player, vlc, gimp, handbrake
 echo "\n==> Installing additional packages\n"
-pacman -Syu xorg lightdm cinnamon blueberry nemo xed xreader system-config-printer --noconfirm
-#pacman -Syu xorg gdm gedit evince gnome-backgrounds gnome-control-center gnome-documents gnome-session gnome-settings-daemon gnome-shell gnome-shell-extensions gnome-software mutter nautilus sushi --noconfirm
+pacman -Syu xorg lightdm cinnamon blueberry nemo nemo-share xed xreader system-config-printer --noconfirm
+#pacman -Syu xorg gdm gedit evince gnome-backgrounds gnome-control-center gnome-documents gnome-session gnome-settings-daemon gnome-shell gnome-shell-extensions gnome-software mutter nautilus nautilus-share sushi --noconfirm
 
 #check for other packages to include, image viewer, media player, vlc, gimp, handbrake
 echo "\n==> Installing additional packages\n"
