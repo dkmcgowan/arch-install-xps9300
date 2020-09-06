@@ -12,7 +12,7 @@ echo root:$1 | chpasswd
 
 echo "\n==> Creating system user\n"
 echo "Complete user information"
-useradd -m -G wheel -s /bin/zsh $2
+useradd -m -G wheel lp rfkill -s /bin/zsh $2
 echo $2:$3 | chpasswd
 
 echo "\n==> Modifying sudoers file\n"
@@ -23,7 +23,7 @@ echo "$2 ALL=(ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
 
 #check for other packages to include, image viewer, media player, vlc, gimp, handbrake
 echo "\n==> Installing additional packages\n"
-pacman -S xorg lightdm blueberry cheese cinnamon system-config-printer gnome-keyring firefox imagemagick gnome-terminal nemo networkmanager xed xreader ttf-dejavu simple-scan vlc gimp vscode remmina libreoffice-still handbrake dconf-editor hplip --noconfirm
+pacman -S xorg lightdm blueberry cheese cinnamon system-config-printer gnome-keyring firefox imagemagick gnome-terminal nemo networkmanager xed xreader ttf-dejavu simple-scan vlc gimp vscode remmina libreoffice-still handbrake dconf-editor hplip python-pyqt5 rhythmbox bluez bluez-utils --noconfirm
 
 echo "\n==> Installing AUR packages\n"
 # su all commands to run as the new user
@@ -43,6 +43,13 @@ echo "\n==> Enabling services\n"
 systemctl enable lightdm.service
 systemctl enable NetworkManager.service
 systemctl enable tlp.service
+systemctl enable bluetooth.service
+systemctl enable org.cups.cupsd.service
+
+echo "\n==> Adding printer\n"
+systemctl start org.cups.cupsd.service
+#see if the ip is really needed
+hp-setup -ia 10.135.1.25
 
 echo "\n==> Copying configuration files\n"
 rsync -avh /arch-install-xps9300/etc/ /etc/
@@ -85,6 +92,13 @@ su $2 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-rows
 #notification settings default
 #run add fingerprint
 #lock computer when asleep setting
+#see what image viewer to install
+#vscode and connections
+#remminna connections
+#set date format
+#set zoom in firefox to 80%
+#install dropbox for nemo
+#1password firefox plugin
 
 echo "\n==> Setting up GRUB\n"
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
