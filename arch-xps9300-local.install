@@ -28,7 +28,7 @@ pacman -Syu xorg lightdm cinnamon blueberry nemo xed xreader system-config-print
 
 #check for other packages to include, image viewer, media player, vlc, gimp, handbrake
 echo "\n==> Installing additional packages\n"
-pacman -Syu cheese firefox baobab file-roller eog networkmanager gnome-remote-desktop gvfs gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 bluez bluez-utils ttf-dejavu imagemagick --noconfirm
+pacman -Syu cheese firefox baobab file-roller eog networkmanager gnome-remote-desktop gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 bluez bluez-utils ttf-dejavu imagemagick --noconfirm
 
 echo "\n==> Installing AUR packages\n"
 # su all commands to run as the new user
