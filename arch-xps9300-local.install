@@ -100,6 +100,7 @@ su $2 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-rows
 #install dropbox for nemo
 #1password firefox plugin
 #test and add things for hibernation (see if we want to default to hybrid)
+#organize bottom dock with apps and update settings here
 
 echo "\n==> Setting up GRUB\n"
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
