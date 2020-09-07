@@ -60,6 +60,7 @@ hp-setup -ia 10.135.1.25
 
 echo "\n:: Copying configuration files...\n"
 rsync -avh /arch-install-xps9300/etc/ /etc/
+rsync -avh /arch-install-xps9300/usr/ /usr/
 
 echo "\n:: Generating localization file...\n"
 locale.gen
