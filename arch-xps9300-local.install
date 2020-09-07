@@ -96,6 +96,7 @@ su $2 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ visible-name 'def
 su $2 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-columns 120"
 su $2 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-rows 28"
 
+#nmcli device wifi connect mcghouse password <password>
 #add setting screen brightness
 #connect network manager wifi
 #vscode connections
