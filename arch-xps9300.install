@@ -45,6 +45,9 @@ echo "\n:: Updating system clock...\n"
 timedatectl set-ntp true
 
 echo "\n:: Formatting partitions...\n"
+umount /dev/nvme0n1p1
+umount /dev/nvme0n1p3
+swapoff -a
 mkfs.ext4 -F /dev/nvme0n1p3
 mkswap /dev/nvme0n1p2
 swapon /dev/nvme0n1p2
