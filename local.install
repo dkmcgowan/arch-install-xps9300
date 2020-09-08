@@ -12,7 +12,7 @@ echo "\n:: Setting root password...\n"
 echo root:$3 | chpasswd
 
 echo "\n:: Creating system user...\n"
-useradd -m -G wheel lp rfkill log adm sys systemd-journal uucp -s /bin/zsh $4
+useradd -m -G wheel,lp,rfkill,log,adm,sys,systemd-journal,uucp -s /bin/zsh $4
 echo $4:$5 | chpasswd
 
 echo "\n:: Modifying sudoers file...\n"
@@ -79,10 +79,7 @@ echo "\n:: Generating localization file...\n"
 sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
 locale-gen
 
-echo "\n:: Generating customization script...\n"
-cat <<EOM > /home/$4/.profile
-pacmd set-sink-volume 0 33000
-pacmd set-source-volume 1 42500
+echo "\n:: Customizing desktop...\n"
 if [[ $7 == "1" ]] then
     su $4 -c "gsettings set org.cinnamon.theme name 'Mint-Y-Dark-Blue'"
     su $4 -c "gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark-Blue'"
@@ -106,6 +103,11 @@ fi
 su $4 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ visible-name 'default'"
 su $4 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-columns 120"
 su $4 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-rows 28"
+
+echo "\n:: Generating login setup script...\n"
+cat <<EOM > /home/$4/.profile
+pacmd set-sink-volume 0 33000
+pacmd set-source-volume 1 42500
 nmcli device wifi connect $1 password $2
 hp-setup -ia $6
 fprintd-enroll
