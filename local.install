@@ -79,39 +79,50 @@ echo "\n:: Generating localization file...\n"
 sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
 locale-gen
 
-echo "\n:: Customizing desktop...\n"
-if [[ $7 == "1" ]] then
-    su $4 -c "gsettings set org.cinnamon.theme name 'Mint-Y-Dark-Blue'"
-    su $4 -c "gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark-Blue'"
-    su $4 -c "gsettings set org.cinnamon.desktop.wm.preferences theme 'Mint-Y-Dark'"
-    su $4 -c "gsettings set org.cinnamon.desktop.interface icon-theme 'Mint-Y-Dark-Blue'"
-    su $4 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad clickpad-click 2"
-    su $4 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad tap-to-click false"
-    su $4 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad natural-scroll false"
-    su $4 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad custom-acceleration true"
-    su $4 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad motion-acceleration 9.3245436105476678"
-    su $4 -c "gsettings set org.cinnamon.settings-daemon.peripherals.touchpad horizontal-scrolling true"
-    su $4 -c "gsettings set org.cinnamon enabled-applets ['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:show-desktop@cinnamon.org:1', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:8:systray@cinnamon.org:3', 'panel1:right:9:xapp-status@cinnamon.org:4', 'panel1:right:10:notifications@cinnamon.org:5', 'panel1:right:11:printers@cinnamon.org:6', 'panel1:right:12:removable-drives@cinnamon.org:7', 'panel1:right:14:network@cinnamon.org:9', 'panel1:right:15:sound@cinnamon.org:10', 'panel1:right:16:power@cinnamon.org:11', 'panel1:right:17:calendar@cinnamon.org:12', 'panel1:right:6:inhibit@cinnamon.org:14', 'panel1:right:3:workspace-switcher@cinnamon.org:17']"
-    su $4 -c "gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/$4/Pictures/archlinux.jpg'"
-    su $4 -c "gsettings set org.cinnamon.desktop.background picture-options 'centered'"
-    su $4 -c "gsettings set org.cinnamon.desktop.interface clock-use-24h false"
-    su $4 -c "gsettings set org.cinnamon.desktop.sceensaver lock-enabled true"
-    su $4 -c "gsettings set org.nemo.desktop computer-icon-visible true"
-    su $4 -c "gsettings set org.nemo.desktop trash-icon-visible true"
-    su $4 -c "gsettings set org.nemo.desktop home-icon-visible true"
-fi
-su $4 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ visible-name 'default'"
-su $4 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-columns 120"
-su $4 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-rows 28"
-
 echo "\n:: Generating login setup script...\n"
+#!/bin/zsh
 cat <<EOM > /home/$4/.profile
+
+echo "\n:: Setting volume...\n"
 pacmd set-sink-volume 0 33000
 pacmd set-source-volume 1 42500
+
+echo "\n:: Customizing desktop...\n"
+if [[ $7 == "1" ]] then
+    gsettings set org.cinnamon.theme name 'Mint-Y-Dark-Blue'
+    gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark-Blue'
+    gsettings set org.cinnamon.desktop.wm.preferences theme 'Mint-Y-Dark'
+    gsettings set org.cinnamon.desktop.interface icon-theme 'Mint-Y-Dark-Blue'
+    gsettings set org.cinnamon.settings-daemon.peripherals.touchpad clickpad-click 2
+    gsettings set org.cinnamon.settings-daemon.peripherals.touchpad tap-to-click false
+    gsettings set org.cinnamon.settings-daemon.peripherals.touchpad natural-scroll false
+    gsettings set org.cinnamon.settings-daemon.peripherals.touchpad custom-acceleration true
+    gsettings set org.cinnamon.settings-daemon.peripherals.touchpad motion-acceleration 9.3245436105476678
+    gsettings set org.cinnamon.settings-daemon.peripherals.touchpad horizontal-scrolling true
+    gsettings set org.cinnamon enabled-applets ['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:show-desktop@cinnamon.org:1', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:8:systray@cinnamon.org:3', 'panel1:right:9:xapp-status@cinnamon.org:4', 'panel1:right:10:notifications@cinnamon.org:5', 'panel1:right:11:printers@cinnamon.org:6', 'panel1:right:12:removable-drives@cinnamon.org:7', 'panel1:right:14:network@cinnamon.org:9', 'panel1:right:15:sound@cinnamon.org:10', 'panel1:right:16:power@cinnamon.org:11', 'panel1:right:17:calendar@cinnamon.org:12', 'panel1:right:6:inhibit@cinnamon.org:14', 'panel1:right:3:workspace-switcher@cinnamon.org:17']
+    gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/$4/Pictures/archlinux.jpg'
+    gsettings set org.cinnamon.desktop.background picture-options 'centered'
+    gsettings set org.cinnamon.desktop.interface clock-use-24h false
+    gsettings set org.cinnamon.desktop.sceensaver lock-enabled true
+    gsettings set org.nemo.desktop computer-icon-visible true
+    gsettings set org.nemo.desktop trash-icon-visible true
+    gsettings set org.nemo.desktop home-icon-visible true
+fi
+gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ visible-name 'default'
+gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-columns 120
+gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-rows 28
+
+echo "\n:: Connecting to the internet...\n"
 nmcli device wifi connect $1 password $2
+
+echo "\n:: Setting up printer...\n"
 hp-setup -ia $6
+
+echo "\n:: Setting up fingerprint...\n"
 fprintd-enroll
+
 #rm /home/$4/.profile
+read "?Installation complete... "
 EOM
 
 echo "\n:: Setting up GRUB..\n"
