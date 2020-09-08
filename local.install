@@ -28,7 +28,7 @@ else
 fi
 
 echo "\n:: Installing additional packages...\n"
-pacman -Syu cheese firefox baobab file-roller eog networkmanager gnome-remote-desktop gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 bluez bluez-utils ttf-dejavu imagemagick --noconfirm
+pacman -Syu cheese firefox baobab file-roller eog networkmanager gnome-remote-desktop gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 cups bluez bluez-utils ttf-dejavu imagemagick --noconfirm
 
 echo "\n:: Installing AUR packages...\n"
 su $4 -c "mkdir /home/$4/packages"
@@ -50,7 +50,7 @@ fi
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $4 -c \"makepkg -sri --noconfirm\"" \;
 
 echo "\n:: Installing fprintd...\n"
-pacman -Syu fprintd
+pacman -Syu fprintd --noconfirm
 
 echo "\n:: Enabling services...\n"
 if [[ $7 == "1" ]] then
@@ -64,8 +64,8 @@ systemctl enable bluetooth.service
 systemctl enable org.cups.cupsd.service
 
 echo "\n:: Copying configuration files...\n"
-mv /arch-install-xps9300/root/home/user/ /arch-install-xps9300/root/home/$4/
-rsync -avh /arch-install-xps9300/root/ /
+mv /arch-install-xps9300/files/home/user/ /arch-install-xps9300/files/home/$4/
+rsync -avh /arch-install-xps9300/files/ /
 echo "$8" >> /etc/hostname
 cat <<EOM > /etc/hosts
 # Static table lookup for hostnames.
@@ -77,12 +77,12 @@ EOM
 
 echo "\n:: Generating localization file...\n"
 sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
-locale.gen
+locale-gen
 
-echo "\n:: Customizing desktop...\n"
+echo "\n:: Generating customization script...\n"
+cat <<EOM > /home/$4/.profile
 pacmd set-sink-volume 0 33000
 pacmd set-source-volume 1 42500
-
 if [[ $7 == "1" ]] then
     su $4 -c "gsettings set org.cinnamon.theme name 'Mint-Y-Dark-Blue'"
     su $4 -c "gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark-Blue'"
@@ -103,16 +103,13 @@ if [[ $7 == "1" ]] then
     su $4 -c "gsettings set org.nemo.desktop trash-icon-visible true"
     su $4 -c "gsettings set org.nemo.desktop home-icon-visible true"
 fi
-
 su $4 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ visible-name 'default'"
 su $4 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-columns 120"
 su $4 -c "gsettings set org.gnome.Terminal.Legacy.Profile:/:0/ default-size-rows 28"
-
-# Script to run first time after login
-cat <<EOM > /home/$4/.profile
 nmcli device wifi connect $1 password $2
 hp-setup -ia $6
-rm /home/$4/.profile
+fprintd-enroll
+#rm /home/$4/.profile
 EOM
 
 echo "\n:: Setting up GRUB..\n"
@@ -123,6 +120,3 @@ sed -i "s/#GRUB_COLOR/GRUBCOLOR/" /etc/default/grub
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 grub-mkfont -s 30 -o /boot/grubfont.pf2 /usr/share/fonts/TTF/DejaVuSansMono.ttf
 grub-mkconfig -o /boot/grub/grub.cfg
-
-echo "\n:: Set up fingerprint..\n"
-fprintd-enroll
