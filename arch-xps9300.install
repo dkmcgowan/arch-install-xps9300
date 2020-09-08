@@ -4,15 +4,26 @@ set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'echo "\"${last_command}\" command filed with exit code $?."' EXIT
 
-if [ "$#" -ne 5 ]; then
-  echo "Usage: $0 [ssid] [passphrase] [root_password] [username] [password]" >&2
+if [ "$#" -ne 6 ]; then
+  echo "Usage: $0 [ssid] [passphrase] [root-password] [username] [password] [printer-ipaddress]" >&2
+  trap -
   exit 1
 fi
 
-read "response?:: Proceed with installation? [Y/n] "
+echo "\n:: Arch installation for Dell XPS 9300"
+echo ":: Choose DM/DE"
+echo "\n:: 1. LightDM/Cinnamon    2. GDM/GNOME    3. Exit\n"
+read "answer?:: Enter a number (default=1): "
 echo
-if [[ ! $response =~ ^[Yy ]$ ]]
-then
+
+if [[ $answer == "" ]] then
+  echo "here"
+  answer="1"
+fi
+
+if [[ $answer == "3" ]] then
+  trap -
+  echo "Installation cancelled\n"
   exit 1
 fi
 
@@ -34,7 +45,7 @@ mkdir /mnt/efi
 mount /dev/nvme0n1p1 /mnt/efi
 
 echo "\n:: Installing base packages...\n"
-pacstrap /mnt base linux linux-firmware bind-tools dhcpcd dosfstools exfatprogs f2fs-tools git gptfdisk grml-zsh-config grub efibootmgr intel-ucode iwd lvm2 man-db man-pages nmap neofetch nvme-cli openssh openvpn parted reflector rsync sudo terminus-font usbutils vi vim zsh systemd htop tlp i7z glances base-devel curl s-tui pacutils
+pacstrap /mnt base linux linux-firmware bind-tools dhcpcd dosfstools exfatprogs f2fs-tools git gptfdisk grml-zsh-config grub efibootmgr intel-ucode iwd lvm2 man-db man-pages nmap neofetch nvme-cli openssh openvpn parted reflector rsync sudo terminus-font usbutils vi gvim zsh systemd htop tlp i7z glances base-devel curl s-tui pacutils
 
 echo "\n:: Generating fstab...\n"
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -45,12 +56,15 @@ mkdir /mnt/arch-install-xps9300
 rsync -avh ./ /mnt/arch-install-xps9300/
 
 echo "\n:: Executing local installation script...\n"
-arch-chroot /mnt /arch-install-xps9300/arch-xps9300-local.install $3 $4 $5
+arch-chroot /mnt /arch-install-xps9300/local.install "$@" $answer
 
 read "response?:: Reboot system? [Y/n] "
 echo
-if [[ ! $response =~ ^[Yy ]$ ]]
-then
+if [[ ! $response =~ ^[Yy ]$ ]] then
   reboot
+  trap -
   exit 1
 fi
+
+trap -
+exit 1
