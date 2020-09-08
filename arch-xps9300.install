@@ -61,7 +61,7 @@ echo "\n:: Generating fstab...\n"
 genfstab -U /mnt >> /mnt/etc/fstab
 
 echo "\n:: Copying installation files...\n"
-chmod +x ./arch-xps9300-local.install
+chmod +x ./local.install
 mkdir /mnt/arch-install-xps9300
 rsync -avh ./ /mnt/arch-install-xps9300/
 
