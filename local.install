@@ -55,6 +55,8 @@ pacman -Syu fprintd
 echo "\n:: Enabling services...\n"
 if [[ $7 == "1" ]] then
     systemctl enable lightdm.service
+else
+    systemctl enable gdm.service
 fi
 systemctl enable NetworkManager.service
 systemctl enable tlp.service
@@ -64,6 +66,14 @@ systemctl enable org.cups.cupsd.service
 echo "\n:: Copying configuration files...\n"
 mv /arch-install-xps9300/root/home/user/ /arch-install-xps9300/root/home/$4/
 rsync -avh /arch-install-xps9300/root/ /
+echo "$8" >> /etc/hostname
+cat <<EOM > /etc/hosts
+# Static table lookup for hostnames.
+# See hosts(5) for details.
+127.0.0.1	localhost
+::1		localhost
+$9		$8.localdomain	$8
+EOM
 
 echo "\n:: Generating localization file...\n"
 sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen

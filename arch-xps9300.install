@@ -13,18 +13,29 @@ fi
 echo "\n:: Arch installation for Dell XPS 9300"
 echo ":: Choose DM/DE"
 echo "\n:: 1. LightDM/Cinnamon    2. GDM/GNOME    3. Exit\n"
-read "answer?:: Enter a number (default=1): "
+read "de?:: Enter a number (default=1): "
 echo
 
-if [[ $answer == "" ]] then
-  echo "here"
-  answer="1"
+if [[ $de == "" ]] then
+  de="1"
 fi
 
-if [[ $answer == "3" ]] then
+if [[ $de == "3" ]] then
   trap -
   echo "Installation cancelled\n"
   exit 1
+fi
+
+read "hostname?:: Enter hostname (default=localhost): "
+echo
+if [[ $hostname == "" ]] then
+  hostname="localhost"
+fi
+
+read "hostip?:: Enter host ip address (default=127.0.1.1): "
+echo
+if [[ $hostip == "" ]] then
+  hostip="127.0.1.1"
 fi
 
 echo "\n:: Connecting to internet...\n"
@@ -38,9 +49,8 @@ mkfs.ext4 -F /dev/nvme0n1p3
 mkswap /dev/nvme0n1p2
 swapon /dev/nvme0n1p2
 
-echo "\n:: Mounting file systems...\n"
+echo "\n:: Mounting disk...\n"
 mount /dev/nvme0n1p3 /mnt
-
 mkdir /mnt/efi
 mount /dev/nvme0n1p1 /mnt/efi
 
@@ -56,15 +66,15 @@ mkdir /mnt/arch-install-xps9300
 rsync -avh ./ /mnt/arch-install-xps9300/
 
 echo "\n:: Executing local installation script...\n"
-arch-chroot /mnt /arch-install-xps9300/local.install "$@" $answer
+arch-chroot /mnt /arch-install-xps9300/local.install "$@" $de $hostname $hostip
 
-read "response?:: Reboot system? [Y/n] "
+read "reboot?:: Reboot system? [Y/n] "
 echo
-if [[ ! $response =~ ^[Yy ]$ ]] then
-  reboot
-  trap -
-  exit 1
+if [[ $reboot =~ ^([Nn])$ ]] then
+    trap -
+    exit 1
 fi
 
+reboot
 trap -
 exit 1
