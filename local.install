@@ -65,7 +65,8 @@ systemctl enable org.cups.cupsd.service
 
 echo "\n:: Copying configuration files...\n"
 mv /arch-install-xps9300/files/home/user/ /arch-install-xps9300/files/home/$4/
-rsync -avh /arch-install-xps9300/files/ /
+rsync -rvh /arch-install-xps9300/files/ /
+chown -R $4:$4 /home/$4/
 
 echo "$8" >> /etc/hostname
 cat <<EOM > /etc/hosts
