@@ -96,8 +96,10 @@ EOM
 
 sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#greeter-session=example-gtk-gnome/greeter-session=lightdm-slick-greeter/" /etc/lightdm/lightdm.conf
-
 sed -i "s/auth       include      system-auth/auth       sufficient   pam_unix.so try_first_pass likeauth nullok\nauth       sufficient   pam_fprintd.so\nauth       include      system-auth/" /etc/pam.d/cinnamon-screensaver
+sed -i "s/auth        include     system-login/auth        sufficient  pam_unix.so try_first_pass likeauth nullok\nauth        sufficient  pam_fprintd.so\nauth        include     system-login/" /etc/pam.d/lightdm
+sed -i "s/auth		include		system-auth/auth		sufficient	pam_unix.so try_first_pass likeauth nullok\nauth		sufficient	pam_fprintd.so\nauth		include		system-auth/" /etc/pam.d/sudo
+sed -i "s/auth      include    system-login/auth      sufficient pam_unix.so try_first_pass likeauth nullok\nauth      sufficient pam_fprintd.so\nauth      include    system-login/" /etc/pam.d/system-local-login
 
 echo "\n:: Generating localization file...\n"
 locale-gen
