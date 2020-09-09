@@ -34,7 +34,7 @@ echo "\n:: Installing AUR packages...\n"
 su $4 -c "mkdir /home/$4/packages"
 cd /home/$4/packages
 
-su $4 -c "gpg --keyserver pool.sks-keyservers.net --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E"
+su $4 -c "gpg --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E"
 su $4 -c "git clone https://aur.archlinux.org/dropbox.git"
 su $4 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
 su $4 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
@@ -64,8 +64,9 @@ systemctl enable bluetooth.service
 systemctl enable org.cups.cupsd.service
 
 echo "\n:: Modifying configuration files...\n"
-mv /arch-install-xps9300/files/home/user/ /arch-install-xps9300/files/home/$4/
-rsync -rvh /arch-install-xps9300/files/ /
+su $4 -c "mkdir -p /home/$4/Pictures/backgrounds"
+#rsync -rvh /arch-install-xps9300/files/ /
+cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/backgrounds/
 chown -R $4:$4 /home/$4/
 
 echo "$8" >> /etc/hostname
@@ -93,8 +94,10 @@ set clipboard=unnamedplus
 set number
 EOM
 
-echo "\n:: Generating localization file...\n"
 sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
+sed -i "s/#greeter-session=example-gtk-gnome/greeter-session=lightdm-slick-greeter/" /etc/lightdm/lightdm.conf
+
+echo "\n:: Generating localization file...\n"
 locale-gen
 
 echo "\n:: Generating login setup script...\n"
@@ -138,19 +141,18 @@ hp-setup -ia $6
 echo "\n:: Setting up fingerprint...\n"
 fprintd-enroll
 
-#rm /home/$4/local-final.install
 read "?Installation complete... "
+rm /home/$4/local-final.install
 EOM
 
-su $4 -c "cat <<EOM > /home/$4/.config/autostart/local-final.install"
-echo "\n:: Connecting to the internet...\n"
+su $4 -c "cat <<EOM > /home/$4/.config/autostart/installer.desktop"
 [Desktop Entry]
 Type=Application
 Exec=gnome-terminal -e '/home/$4/local-final.install'
 X-GNOME-Autostart-enabled=true
 NoDisplay=false
 Hidden=false
-Name[en_US]=final-install
+Name[en_US]=installer
 Comment[en_US]=No description
 X-GNOME-Autostart-Delay=2
 EOM
