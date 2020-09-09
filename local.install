@@ -80,9 +80,8 @@ sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
 locale-gen
 
 echo "\n:: Generating login setup script...\n"
-#!/bin/zsh
 cat <<EOM > /home/$4/.profile
-
+#!/bin/zsh
 echo "\n:: Setting volume...\n"
 pacmd set-sink-volume 0 33000
 pacmd set-source-volume 1 42500
@@ -123,6 +122,19 @@ fprintd-enroll
 
 #rm /home/$4/.profile
 read "?Installation complete... "
+EOM
+
+cat <<EOM > /home/$4/.config/autostart/installation.desktop
+echo "\n:: Connecting to the internet...\n"
+[Desktop Entry]
+Type=Application
+Exec=gnome-terminal -e '/home/$4/script.sh'
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Hidden=false
+Name[en_US]=installation
+Comment[en_US]=No description
+X-GNOME-Autostart-Delay=2
 EOM
 
 echo "\n:: Setting up GRUB..\n"
