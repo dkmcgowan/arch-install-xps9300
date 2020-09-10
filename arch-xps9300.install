@@ -4,6 +4,7 @@ set -e
 function finish {
   echo "\n:: Unmounting all partitions...\n"
   umount -R /mnt
+  swapoff -a
   echo "\"${last_command}\" command filed with exit code $?."
 }
 
@@ -82,6 +83,7 @@ arch-chroot /mnt /arch-install-xps9300/local.install "$@" $printerip $de $hostna
 
 echo "\n:: Unmounting all partitions...\n"
 umount -R /mnt
+swapoff -a
 
 read "reboot?:: Reboot system? [Y/n] "
 echo
