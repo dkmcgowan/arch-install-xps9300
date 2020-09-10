@@ -4,8 +4,8 @@ set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'echo "\"${last_command}\" command filed with exit code $?."' EXIT
 
-if [ "$#" -ne 6 ]; then
-  echo "Usage: $0 [ssid] [passphrase] [root-password] [username] [password] [printer-ipaddress]" >&2
+if [ "$#" -ne 5 ]; then
+  echo "Usage: $0 [ssid] [passphrase] [root-password] [username] [password]" >&2
   trap -
   exit 1
 fi
@@ -38,6 +38,12 @@ if [[ "$hostip" == "" ]] then
   hostip="127.0.1.1"
 fi
 
+read "printerip?:: Enter hp printer ip address (default=na): "
+echo
+if [[ "$printerip" == "" ]] then
+  printerip="na"
+fi
+
 echo "\n:: Connecting to internet...\n"
 iwctl --passphrase $2 station wlan0 connect $1
 
@@ -66,7 +72,7 @@ mkdir /mnt/arch-install-xps9300
 rsync -avh ./ /mnt/arch-install-xps9300/
 
 echo "\n:: Executing local installation script...\n"
-arch-chroot /mnt /arch-install-xps9300/local.install "$@" $de $hostname $hostip
+arch-chroot /mnt /arch-install-xps9300/local.install "$@" $de $hostname $hostip $printerip
 
 echo "\n:: Unmounting all partitions...\n"
 umount -R /mnt
