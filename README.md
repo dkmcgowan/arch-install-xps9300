@@ -14,8 +14,3 @@ Arch install scripts for Dell XPS 9300
 - connect online accounts
 - install 1password in firefox
 - set vscode back up
-
-- If you are already mounted, due to a script failure or something else, must run following before script
-    - umount /dev/nvme0n1p1
-    - umount /dev/nvme0n1p3
-    - swapoff -a
