@@ -24,7 +24,7 @@ if [[ $7 == "1" ]] then
     pacman -Syu xorg lightdm cinnamon blueberry nemo nemo-share xed xreader system-config-printer --noconfirm
 else
     echo "\n:: Installing GNOME and GDM...\n"
-    pacman -Syu xorg gdm gnome-shell gnome-shell-extensions gnome-session gnome-settings-daemon gnome-control-center gnome-software gedit evince gnome-backgrounds gnome-documents mutter nautilus nautilus-share sushi --noconfirm
+    pacman -Syu xorg gdm gnome-shell gnome-shell-extensions gnome-session gnome-settings-daemon gnome-control-center gnome-software gnome-tweaks gedit evince gnome-backgrounds gnome-documents mutter nautilus nautilus-share sushi --noconfirm
 fi
 
 echo "\n:: Installing additional packages...\n"
@@ -34,8 +34,6 @@ echo "\n:: Installing AUR packages...\n"
 su $4 -c "mkdir /home/$4/packages"
 cd /home/$4/packages
 
-su $4 -c "gpg --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E"
-su $4 -c "git clone https://aur.archlinux.org/dropbox.git"
 su $4 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
 su $4 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
 
@@ -44,10 +42,23 @@ if [[ $7 == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-themes.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
-    su $4 -c "git clone https://aur.archlinux.org/nemo-dropbox.git"
 fi
 
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $4 -c \"makepkg -sri --noconfirm\"" \;
+
+echo "\n:: Installing dropbox...\n"
+su $4 -c "gpg --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E"
+su $4 -c "git clone https://aur.archlinux.org/dropbox.git"
+cd /home/$4/packages/dropbox
+su $4 -c "makepkg -sri --noconfirm"
+cd /home/$4/packages
+
+if [[ $7 == "1" ]] then
+    su $4 -c "git clone https://aur.archlinux.org/nemo-dropbox.git"
+    cd /home/$4/packages/nemo-dropbox
+    su $4 -c "makepkg -sri --noconfirm"
+    cd /home/$4/packages
+fi
 
 echo "\n:: Installing fprintd...\n"
 pacman -Syu fprintd --noconfirm
@@ -65,7 +76,6 @@ systemctl enable org.cups.cupsd.service
 
 echo "\n:: Modifying configuration files...\n"
 su $4 -c "mkdir -p /home/$4/Pictures/backgrounds"
-#rsync -rvh /arch-install-xps9300/files/ /
 cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/backgrounds/
 chown -R $4:$4 /home/$4/
 
@@ -88,15 +98,15 @@ cat <<EOM > /etc/hosts
 $9		$8.localdomain	$8
 EOM
 
-su $4 -c "cat <<EOM > /home/$4/.vimrc"
+cat <<EOM > /home/$4/.vimrc
 source $VIMRUNTIME/defaults.vim
 set clipboard=unnamedplus
 set number
 EOM
+chown -R $4:$4 /home/$4/.vimrc
 
 sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
 sed -i "s/#greeter-session=example-gtk-gnome/greeter-session=lightdm-slick-greeter/" /etc/lightdm/lightdm.conf
-
 sed -i "s/auth       include      system-auth/auth       sufficient   pam_unix.so try_first_pass likeauth nullok\nauth       sufficient   pam_fprintd.so\nauth       include      system-auth/" /etc/pam.d/cinnamon-screensaver
 sed -i "s/auth        include     system-login/auth        sufficient  pam_unix.so try_first_pass likeauth nullok\nauth        sufficient  pam_fprintd.so\nauth        include     system-login/" /etc/pam.d/lightdm
 sed -i "s/auth		include		system-auth/auth		sufficient	pam_unix.so try_first_pass likeauth nullok\nauth		sufficient	pam_fprintd.so\nauth		include		system-auth/" /etc/pam.d/sudo
@@ -106,7 +116,7 @@ echo "\n:: Generating localization file...\n"
 locale-gen
 
 echo "\n:: Generating login setup script...\n"
-su $4 -c "cat <<EOM > /home/$4/local-final.install"
+cat <<EOM > /home/$4/local-final.install
 #!/bin/zsh
 echo "\n:: Setting volume...\n"
 pacmd set-sink-volume 0 33000
@@ -149,8 +159,9 @@ fprintd-enroll
 read "?Installation complete... "
 rm /home/$4/local-final.install
 EOM
+chown -R $4:$4 /home/$4/local-final.install
 
-su $4 -c "cat <<EOM > /home/$4/.config/autostart/installer.desktop"
+cat <<EOM > /home/$4/.config/autostart/installer.desktop
 [Desktop Entry]
 Type=Application
 Exec=gnome-terminal -e '/home/$4/local-final.install'
@@ -161,6 +172,7 @@ Name[en_US]=installer
 Comment[en_US]=No description
 X-GNOME-Autostart-Delay=2
 EOM
+chown -R $4:$4 /home/$4/.config/autostart/installer.desktop
 
 echo "\n:: Setting up GRUB..\n"
 fs_uuid=$(blkid -o value -s UUID /dev/nvme0n1p2)
