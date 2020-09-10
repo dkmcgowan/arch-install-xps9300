@@ -75,7 +75,13 @@ echo "\n:: Installing additional packages (AUR)...\n"
 su $4 -c "mkdir /home/$4/packages"
 cd /home/$4/packages
 su $4 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
+cd /home/$4/packages/libfprint-tod-git
+su $4 -c "makepkg -sri --noconfirm"
 su $4 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
+cd /home/$4/packages/libfprint-2-tod1-xps9300-bin
+su $4 -c "makepkg -sri --noconfirm"
+cd /home/$4/packages
+
 if [[ $7 == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/lightdm-slick-greeter.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
