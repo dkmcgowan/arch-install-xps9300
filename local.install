@@ -4,6 +4,17 @@ echo "\n:: Setting local timezone...\n"
 ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
 hwclock --systohc
 
+echo "\n:: Generating initramfs...\n"
+sed -i "s/base udev/base udev resume/" /etc/mkinitcpio.conf
+mkinitcpio -P
+
+echo "\n:: Setting root password...\n"
+echo root:$3 | chpasswd
+
+echo "\n:: Creating system user...\n"
+useradd -m -G wheel,lp,rfkill,log,adm,sys,systemd-journal,uucp -s /bin/zsh $4
+echo $4:$5 | chpasswd
+
 echo "\n:: Modifying configuration files...\n"
 su $4 -c "mkdir -p /home/$4/Pictures/backgrounds"
 cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/backgrounds/
@@ -44,17 +55,6 @@ sed -i "s/auth      include    system-login/auth      sufficient pam_unix.so try
 
 echo "\n:: Generating localization file...\n"
 locale-gen
-
-echo "\n:: Generating initramfs...\n"
-sed -i "s/base udev/base udev resume/" /etc/mkinitcpio.conf
-mkinitcpio -P
-
-echo "\n:: Setting root password...\n"
-echo root:$3 | chpasswd
-
-echo "\n:: Creating system user...\n"
-useradd -m -G wheel,lp,rfkill,log,adm,sys,systemd-journal,uucp -s /bin/zsh $4
-echo $4:$5 | chpasswd
 
 echo "\n:: Modifying sudoers file...\n"
 echo "Defaults passwd_timeout=0" | EDITOR="tee -a" visudo
