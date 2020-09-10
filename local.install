@@ -15,7 +15,7 @@ FONT=ter-132b
 FONT_MAP=8859-2
 EOM
 
-echo "\n:: Configuring nework...\n"
+echo "\n:: Configuring network...\n"
 echo "$8" >> /etc/hostname
 cat <<EOM > /etc/hosts
 # Static table lookup for hostnames.
@@ -43,8 +43,6 @@ grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 grub-mkfont -s 30 -o /boot/grubfont.pf2 /usr/share/fonts/TTF/DejaVuSansMono.ttf
 grub-mkconfig -o /boot/grub/grub.cfg
 
-echo "\n:: Performing additional setup...\n"
-
 echo "\n:: Creating system user and configuration...\n"
 useradd -m -G wheel,lp,rfkill,log,adm,sys,systemd-journal,uucp -s /bin/zsh $4
 echo $4:$5 | chpasswd
@@ -60,14 +58,6 @@ chown -R $4:$4 /home/$4/.vimrc
 echo "Defaults passwd_timeout=0" | EDITOR="tee -a" visudo
 echo "$4 ALL=(ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo # needed for makepkg to work in this script
 
-
-
-
-
-
-
-
-
 echo "\n:: Setting up DM/DE...\n"
 if [[ $7 == "1" ]] then
     echo "\n:: Installing Cinnamon and LightDM...\n"
@@ -79,7 +69,7 @@ else
 fi
 
 echo "\n:: Installing additional packages (official)...\n"
-pacman -Syu cheese firefox baobab file-roller eog networkmanager gnome-remote-desktop gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 cups bluez bluez-utils ttf-dejavu imagemagick --noconfirm
+pacman -Syu cheese firefox eog networkmanager gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 cups bluez bluez-utils ttf-dejavu imagemagick --noconfirm
 
 echo "\n:: Installing additional packages (AUR)...\n"
 su $4 -c "mkdir /home/$4/packages"
@@ -95,9 +85,10 @@ fi
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $4 -c \"makepkg -sri --noconfirm\"" \;
 
 echo "\n:: Installing package dropbox...\n"
+cd /home/$4/packages
 su $4 -c "git clone https://aur.archlinux.org/dropbox.git"
 cd /home/$4/packages/dropbox
-#skipping pgp check, it was manually verified, keyserver timing out
+#skipping pgp check, it was manually verified 9/10/20, keyserver timing out
 #su $4 -c "gpg --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E"
 su $4 -c "makepkg -sri --skippgpcheck --noconfirm"
 cd /home/$4/packages
