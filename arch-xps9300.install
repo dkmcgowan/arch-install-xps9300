@@ -16,11 +16,11 @@ echo "\n:: 1. LightDM/Cinnamon    2. GDM/GNOME    3. Exit\n"
 read "de?:: Enter a number (default=1): "
 echo
 
-if [[ $de == "" ]] then
+if [[ "$de" == "" ]] then
   de="1"
 fi
 
-if [[ $de == "3" ]] then
+if [[ "$de" == "3" ]] then
   trap -
   echo "Installation cancelled\n"
   exit 1
@@ -28,13 +28,13 @@ fi
 
 read "hostname?:: Enter hostname (default=localhost): "
 echo
-if [[ $hostname == "" ]] then
+if [[ "$hostname" == "" ]] then
   hostname="localhost"
 fi
 
 read "hostip?:: Enter host ip address (default=127.0.1.1): "
 echo
-if [[ $hostip == "" ]] then
+if [[ "$hostip" == "" ]] then
   hostip="127.0.1.1"
 fi
 
@@ -70,11 +70,10 @@ arch-chroot /mnt /arch-install-xps9300/local.install "$@" $de $hostname $hostip
 
 read "reboot?:: Reboot system? [Y/n] "
 echo
-if [[ $reboot =~ ^([Nn])$ ]] then
+if [[ "$reboot" == "" || "$reboot" =~ ^[Yy]$ ]] then
     trap -
-    exit 1
+    reboot
 fi
 
-reboot
 trap -
 exit 1
