@@ -4,33 +4,19 @@ echo "\n:: Setting local timezone...\n"
 ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
 hwclock --systohc
 
-echo "\n:: Generating initramfs...\n"
-sed -i "s/base udev/base udev resume/" /etc/mkinitcpio.conf
-mkinitcpio -P
-
-echo "\n:: Setting root password...\n"
-echo root:$3 | chpasswd
-
-echo "\n:: Creating system user...\n"
-useradd -m -G wheel,lp,rfkill,log,adm,sys,systemd-journal,uucp -s /bin/zsh $4
-echo $4:$5 | chpasswd
-
-echo "\n:: Modifying configuration files...\n"
-su $4 -c "mkdir -p /home/$4/Pictures/backgrounds"
-cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/backgrounds/
-chown -R $4:$4 /home/$4/
-
-echo "$8" >> /etc/hostname
-
+echo "\n:: Configuring localization...\n"
+sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
+locale-gen
 cat <<EOM > /etc/locale.conf
 LANG=en_US.UTF-8
 EOM
-
 cat <<EOM > /etc/vconsole.conf
 FONT=ter-132b
 FONT_MAP=8859-2
 EOM
 
+echo "\n:: Configuring nework...\n"
+echo "$8" >> /etc/hostname
 cat <<EOM > /etc/hosts
 # Static table lookup for hostnames.
 # See hosts(5) for details.
@@ -39,61 +25,82 @@ cat <<EOM > /etc/hosts
 $9		$8.localdomain	$8
 EOM
 
-cat << "EOM" > /home/$4/.vimrc
-source $VIMRUNTIME/defaults.vim
+echo "\n:: Generating initramfs...\n"
+sed -i "s/base udev/base udev resume/" /etc/mkinitcpio.conf
+mkinitcpio -P
+
+echo "\n:: Setting root password...\n"
+echo root:$3 | chpasswd
+
+echo "\n:: Setting up boot loader..\n"
+fs_uuid=$(blkid -o value -s UUID /dev/nvme0n1p2)
+sed -i "s/loglevel=3 quiet/loglevel=3 quiet resume=UUID=$fs_uuid/" /etc/default/grub
+sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"\"\nGRUB_FONT=\"\/boot\/grubfont.pf2\"/" /etc/default/grub
+sed -i "s/#GRUB_COLOR/GRUB_COLOR/" /etc/default/grub
+sed -i "s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" /etc/default/grub
+sed -i "s/GRUB_TIMEOUT_STYLE=menu/GRUB_TIMEOUT_STYLE=hidden/" /etc/default/grub
+grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+grub-mkfont -s 30 -o /boot/grubfont.pf2 /usr/share/fonts/TTF/DejaVuSansMono.ttf
+grub-mkconfig -o /boot/grub/grub.cfg
+
+echo "\n:: Performing additional setup...\n"
+
+echo "\n:: Creating system user and configuration...\n"
+useradd -m -G wheel,lp,rfkill,log,adm,sys,systemd-journal,uucp -s /bin/zsh $4
+echo $4:$5 | chpasswd
+su $4 -c "mkdir -p /home/$4/Pictures/backgrounds"
+cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/backgrounds/
+chown -R $4:$4 /home/$4/
+cat <<EOM > /home/$4/.vimrc
+source \$VIMRUNTIME/defaults.vim
 set clipboard=unnamedplus
 set number
 EOM
 chown -R $4:$4 /home/$4/.vimrc
-
-sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
-sed -i "s/#greeter-session=example-gtk-gnome/greeter-session=lightdm-slick-greeter/" /etc/lightdm/lightdm.conf
-sed -i "s/auth       include      system-auth/auth       sufficient   pam_unix.so try_first_pass likeauth nullok\nauth       sufficient   pam_fprintd.so\nauth       include      system-auth/" /etc/pam.d/cinnamon-screensaver
-sed -i "s/auth        include     system-login/auth        sufficient  pam_unix.so try_first_pass likeauth nullok\nauth        sufficient  pam_fprintd.so\nauth        include     system-login/" /etc/pam.d/lightdm
-sed -i "s/auth		include		system-auth/auth		sufficient	pam_unix.so try_first_pass likeauth nullok\nauth		sufficient	pam_fprintd.so\nauth		include		system-auth/" /etc/pam.d/sudo
-sed -i "s/auth      include    system-login/auth      sufficient pam_unix.so try_first_pass likeauth nullok\nauth      sufficient pam_fprintd.so\nauth      include    system-login/" /etc/pam.d/system-local-login
-
-echo "\n:: Generating localization file...\n"
-locale-gen
-
-echo "\n:: Modifying sudoers file...\n"
 echo "Defaults passwd_timeout=0" | EDITOR="tee -a" visudo
 echo "$4 ALL=(ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo # needed for makepkg to work in this script
 
+
+
+
+
+
+
+
+
+echo "\n:: Setting up DM/DE...\n"
 if [[ $7 == "1" ]] then
     echo "\n:: Installing Cinnamon and LightDM...\n"
     pacman -Syu xorg lightdm cinnamon blueberry nemo nemo-share xed xreader system-config-printer --noconfirm
+    sed -i "s/#greeter-session=example-gtk-gnome/greeter-session=lightdm-slick-greeter/" /etc/lightdm/lightdm.conf
 else
     echo "\n:: Installing GNOME and GDM...\n"
     pacman -Syu xorg gdm gnome-shell gnome-shell-extensions gnome-session gnome-settings-daemon gnome-control-center gnome-software gnome-tweaks gedit evince gnome-backgrounds gnome-documents mutter nautilus nautilus-share sushi --noconfirm
 fi
 
-echo "\n:: Installing additional packages...\n"
+echo "\n:: Installing additional packages (official)...\n"
 pacman -Syu cheese firefox baobab file-roller eog networkmanager gnome-remote-desktop gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 cups bluez bluez-utils ttf-dejavu imagemagick --noconfirm
 
-echo "\n:: Installing AUR packages...\n"
+echo "\n:: Installing additional packages (AUR)...\n"
 su $4 -c "mkdir /home/$4/packages"
 cd /home/$4/packages
-
 su $4 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
 su $4 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
-
 if [[ $7 == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/lightdm-slick-greeter.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-themes.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
 fi
-
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $4 -c \"makepkg -sri --noconfirm\"" \;
 
-echo "\n:: Installing dropbox...\n"
-su $4 -c "gpg --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E"
+echo "\n:: Installing package dropbox...\n"
 su $4 -c "git clone https://aur.archlinux.org/dropbox.git"
 cd /home/$4/packages/dropbox
-su $4 -c "makepkg -sri --noconfirm"
+#skipping pgp check, it was manually verified, keyserver timing out
+#su $4 -c "gpg --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E"
+su $4 -c "makepkg -sri --skippgpcheck --noconfirm"
 cd /home/$4/packages
-
 if [[ $7 == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/nemo-dropbox.git"
     cd /home/$4/packages/nemo-dropbox
@@ -101,8 +108,12 @@ if [[ $7 == "1" ]] then
     cd /home/$4/packages
 fi
 
-echo "\n:: Installing fprintd...\n"
+echo "\n:: Installing fingerprint reader (fprintd)...\n"
 pacman -Syu fprintd --noconfirm
+sed -i "s/auth       include      system-auth/auth       sufficient   pam_unix.so try_first_pass likeauth nullok\nauth       sufficient   pam_fprintd.so\nauth       include      system-auth/" /etc/pam.d/cinnamon-screensaver
+sed -i "s/auth        include     system-login/auth        sufficient  pam_unix.so try_first_pass likeauth nullok\nauth        sufficient  pam_fprintd.so\nauth        include     system-login/" /etc/pam.d/lightdm
+sed -i "s/auth		include		system-auth/auth		sufficient	pam_unix.so try_first_pass likeauth nullok\nauth		sufficient	pam_fprintd.so\nauth		include		system-auth/" /etc/pam.d/sudo
+sed -i "s/auth      include    system-login/auth      sufficient pam_unix.so try_first_pass likeauth nullok\nauth      sufficient pam_fprintd.so\nauth      include    system-login/" /etc/pam.d/system-local-login
 
 echo "\n:: Enabling services...\n"
 if [[ $7 == "1" ]] then
@@ -117,6 +128,8 @@ systemctl enable org.cups.cupsd.service
 
 echo "\n:: Generating final script...\n"
 cat <<EOM > /home/$4/final.install
+#!/bin/zsh
+
 echo "\n:: Setting volume...\n"
 pacmd set-sink-volume 0 33000
 pacmd set-source-volume 1 42500
@@ -152,7 +165,7 @@ nmcli device wifi connect $1 password $2
 echo "\n:: Setting up printer...\n"
 hp-setup -ia $6
 
-echo "\n:: Setting up fingerprint...\n"
+echo "\n:: Setting up fingerprint reader...\n"
 fprintd-enroll
 
 read "?Installation complete... "
@@ -160,6 +173,7 @@ rm /home/$4/final.install
 EOM
 chown -R $4:$4 /home/$4/final.install
 
+echo "\n:: Generating final script autostart file...\n"
 su $4 -c "mkdir -p /home/$4/.config/autostart"
 cat <<EOM > /home/$4/.config/autostart/installer.desktop
 [Desktop Entry]
@@ -173,14 +187,3 @@ Comment[en_US]=No description
 X-GNOME-Autostart-Delay=2
 EOM
 chown -R $4:$4 /home/$4/.config/autostart/installer.desktop
-
-echo "\n:: Setting up GRUB..\n"
-fs_uuid=$(blkid -o value -s UUID /dev/nvme0n1p2)
-sed -i "s/loglevel=3 quiet/loglevel=3 quiet resume=UUID=$fs_uuid/" /etc/default/grub
-sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"\"\nGRUB_FONT=\"\/boot\/grubfont.pf2\"/" /etc/default/grub
-sed -i "s/#GRUB_COLOR/GRUB_COLOR/" /etc/default/grub
-sed -i "s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" /etc/default/grub
-sed -i "s/GRUB_TIMEOUT_STYLE=menu/GRUB_TIMEOUT_STYLE=hidden/" /etc/default/grub
-grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
-grub-mkfont -s 30 -o /boot/grubfont.pf2 /usr/share/fonts/TTF/DejaVuSansMono.ttf
-grub-mkconfig -o /boot/grub/grub.cfg
