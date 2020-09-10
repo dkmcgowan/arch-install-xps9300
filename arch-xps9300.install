@@ -72,7 +72,7 @@ mkdir /mnt/arch-install-xps9300
 rsync -avh ./ /mnt/arch-install-xps9300/
 
 echo "\n:: Executing local installation script...\n"
-arch-chroot /mnt /arch-install-xps9300/local.install "$@" $de $hostname $hostip $printerip
+arch-chroot /mnt /arch-install-xps9300/local.install "$@" $printerip $de $hostname $hostip
 
 echo "\n:: Unmounting all partitions...\n"
 umount -R /mnt
