@@ -68,6 +68,9 @@ rsync -avh ./ /mnt/arch-install-xps9300/
 echo "\n:: Executing local installation script...\n"
 arch-chroot /mnt /arch-install-xps9300/local.install "$@" $de $hostname $hostip
 
+echo "\n:: Unmounting all partitions...\n"
+umount -R /mnt
+
 read "reboot?:: Reboot system? [Y/n] "
 echo
 if [[ "$reboot" == "" || "$reboot" =~ ^[Yy]$ ]] then
