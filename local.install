@@ -4,6 +4,47 @@ echo "\n:: Setting local timezone...\n"
 ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
 hwclock --systohc
 
+echo "\n:: Modifying configuration files...\n"
+su $4 -c "mkdir -p /home/$4/Pictures/backgrounds"
+cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/backgrounds/
+chown -R $4:$4 /home/$4/
+
+echo "$8" >> /etc/hostname
+
+cat <<EOM > /etc/locale.conf
+LANG=en_US.UTF-8
+EOM
+
+cat <<EOM > /etc/vconsole.conf
+FONT=ter-132b
+FONT_MAP=8859-2
+EOM
+
+cat <<EOM > /etc/hosts
+# Static table lookup for hostnames.
+# See hosts(5) for details.
+127.0.0.1	localhost
+::1		localhost
+$9		$8.localdomain	$8
+EOM
+
+cat << "EOM" > /home/$4/.vimrc
+source $VIMRUNTIME/defaults.vim
+set clipboard=unnamedplus
+set number
+EOM
+chown -R $4:$4 /home/$4/.vimrc
+
+sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
+sed -i "s/#greeter-session=example-gtk-gnome/greeter-session=lightdm-slick-greeter/" /etc/lightdm/lightdm.conf
+sed -i "s/auth       include      system-auth/auth       sufficient   pam_unix.so try_first_pass likeauth nullok\nauth       sufficient   pam_fprintd.so\nauth       include      system-auth/" /etc/pam.d/cinnamon-screensaver
+sed -i "s/auth        include     system-login/auth        sufficient  pam_unix.so try_first_pass likeauth nullok\nauth        sufficient  pam_fprintd.so\nauth        include     system-login/" /etc/pam.d/lightdm
+sed -i "s/auth		include		system-auth/auth		sufficient	pam_unix.so try_first_pass likeauth nullok\nauth		sufficient	pam_fprintd.so\nauth		include		system-auth/" /etc/pam.d/sudo
+sed -i "s/auth      include    system-login/auth      sufficient pam_unix.so try_first_pass likeauth nullok\nauth      sufficient pam_fprintd.so\nauth      include    system-login/" /etc/pam.d/system-local-login
+
+echo "\n:: Generating localization file...\n"
+locale-gen
+
 echo "\n:: Generating initramfs...\n"
 sed -i "s/base udev/base udev resume/" /etc/mkinitcpio.conf
 mkinitcpio -P
@@ -74,50 +115,8 @@ systemctl enable tlp.service
 systemctl enable bluetooth.service
 systemctl enable org.cups.cupsd.service
 
-echo "\n:: Modifying configuration files...\n"
-su $4 -c "mkdir -p /home/$4/Pictures/backgrounds"
-cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/backgrounds/
-chown -R $4:$4 /home/$4/
-
-echo "$8" >> /etc/hostname
-
-cat <<EOM > /etc/locale.conf
-LANG=en_US.UTF-8
-EOM
-
-cat <<EOM > /etc/vconsole.conf
-FONT=ter-132b
-FONT_MAP=8859-2
-EOM
-
-cat <<EOM > /etc/hosts
-# Static table lookup for hostnames.
-# See hosts(5) for details.
-127.0.0.1	localhost
-::1		localhost
-$9		$8.localdomain	$8
-EOM
-
-cat <<EOM > /home/$4/.vimrc
-source $VIMRUNTIME/defaults.vim
-set clipboard=unnamedplus
-set number
-EOM
-chown -R $4:$4 /home/$4/.vimrc
-
-sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
-sed -i "s/#greeter-session=example-gtk-gnome/greeter-session=lightdm-slick-greeter/" /etc/lightdm/lightdm.conf
-sed -i "s/auth       include      system-auth/auth       sufficient   pam_unix.so try_first_pass likeauth nullok\nauth       sufficient   pam_fprintd.so\nauth       include      system-auth/" /etc/pam.d/cinnamon-screensaver
-sed -i "s/auth        include     system-login/auth        sufficient  pam_unix.so try_first_pass likeauth nullok\nauth        sufficient  pam_fprintd.so\nauth        include     system-login/" /etc/pam.d/lightdm
-sed -i "s/auth		include		system-auth/auth		sufficient	pam_unix.so try_first_pass likeauth nullok\nauth		sufficient	pam_fprintd.so\nauth		include		system-auth/" /etc/pam.d/sudo
-sed -i "s/auth      include    system-login/auth      sufficient pam_unix.so try_first_pass likeauth nullok\nauth      sufficient pam_fprintd.so\nauth      include    system-login/" /etc/pam.d/system-local-login
-
-echo "\n:: Generating localization file...\n"
-locale-gen
-
-echo "\n:: Generating login setup script...\n"
-cat <<EOM > /home/$4/local-final.install
-#!/bin/zsh
+echo "\n:: Generating final script...\n"
+cat <<EOM > /home/$4/final.install
 echo "\n:: Setting volume...\n"
 pacmd set-sink-volume 0 33000
 pacmd set-source-volume 1 42500
@@ -157,14 +156,15 @@ echo "\n:: Setting up fingerprint...\n"
 fprintd-enroll
 
 read "?Installation complete... "
-rm /home/$4/local-final.install
+rm /home/$4/final.install
 EOM
-chown -R $4:$4 /home/$4/local-final.install
+chown -R $4:$4 /home/$4/final.install
 
+su $4 -c "mkdir -p /home/$4/.config/autostart"
 cat <<EOM > /home/$4/.config/autostart/installer.desktop
 [Desktop Entry]
 Type=Application
-Exec=gnome-terminal -e '/home/$4/local-final.install'
+Exec=gnome-terminal -e '/home/$4/final.install'
 X-GNOME-Autostart-enabled=true
 NoDisplay=false
 Hidden=false
