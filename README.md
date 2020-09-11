@@ -23,13 +23,13 @@ More information on partitioning can be found at [Partition the disks](https://w
 Download the latest live disk and prepare a USB drive as explained in [Prepare an installation medium](https://wiki.archlinux.org/index.php/installation_guide#Prepare_an_installation_medium).
 
 Connect to the internet  
-> iwctl station wlan0 connect [ssid]
+> iwctl station wlan0 connect [ssid]  
 Install git  
-> pacman -Sy git
+> pacman -Sy git  
 Clone locally this repository  
-> git clone https://github.com/dkmcgowan/arch-install-xps9300
+> git clone https://github.com/dkmcgowan/arch-install-xps9300  
 Execute the script sending output to console and install.log  
-> zsh arch-xps9300.install [ssid] [passphrase] [root-password] [username] [password] [printer-ipaddress] 2>&1 | tee install.log
+> zsh arch-xps9300.install [ssid] [passphrase] [root-password] [username] [password] [printer-ipaddress] 2>&1 | tee install.log  
 
 
 - Modify hostname as needed
