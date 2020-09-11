@@ -30,7 +30,7 @@ More information on partitioning can be found at [Partition the disks](https://w
 
 Download the latest live disk and prepare a USB drive as explained in [Prepare an installation medium](https://wiki.archlinux.org/index.php/installation_guide#Prepare_an_installation_medium).
 
-Next you will connect to the internet, install Git, clone the repository locally, and execute the script. It will send the output to bothconsole and the install.log file. If you want to review the log, you should hit "n" when asked to Reboot because the install.log file will be lost once you reboot.
+Next you will connect to the internet, install Git, clone the repository locally, and execute the script to complete the installation. It will send the output to both console and the install.log file. If you want to review the log file for errors, you should hit "n" when asked to Reboot because the install.log file will be lost once you reboot.
 
 * iwctl station wlan0 connect [ssid]
 * pacman -Sy git
