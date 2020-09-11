@@ -20,9 +20,9 @@ echo "$8" >> /etc/hostname
 cat <<EOM > /etc/hosts
 # Static table lookup for hostnames.
 # See hosts(5) for details.
-127.0.0.1	localhost
-::1		localhost
-$9		$8.localdomain	$8
+127.0.0.1       localhost
+::1             localhost
+$9		        $8.localdomain    $8
 EOM
 
 echo "\n:: Generating initramfs...\n"
