@@ -129,6 +129,7 @@ cat <<EOM > /home/$4/final.install
 
 echo "\n:: Setting volume...\n"
 pacmd set-sink-volume 0 33000
+pacmd set-sink-mute 0 0
 pacmd set-source-volume 1 42500
 
 echo "\n:: Customizing desktop...\n"
