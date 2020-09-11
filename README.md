@@ -39,7 +39,7 @@ Next you will connect to the internet, install Git, clone the repository locally
 
 ## Installation
 
-The installation will ask a few questions. First you will select from you display manager and desktop environment.  You will then be asked to enter the machine hostname and IP address. If you do not have a static IP address just leave the default for 127.0.1.1. You can also enter the IP address of an HP printer if you have one and it will also be set up during installation, if you do not have an HP printer leave this as the default.  The HP is the only printer this asks to set up because that is the printer that I use.
+The installation will ask a few questions. First you will select your display manager and desktop environment then you will be asked to enter the machine hostname and IP address. If you do not have a static IP address just leave the default 127.0.1.1. You can also enter the IP address of an HP printer and it will also be set up during installation, if you do not have an HP printer leave this as the default na.  The HP is the only printer this asks to set up because that is the printer that I use.
 
 ## Remaining set up steps after installation
 
@@ -49,3 +49,4 @@ These are notes for things on my default installation that I did not include yet
 * Connect online accounts (gdrive)
 * Install 1Password X in Firefox and set it up
 * Set up vscode SSH connections and settings
+* Configure name/email with git
