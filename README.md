@@ -50,3 +50,4 @@ These are notes for things on my default installation that I did not include yet
 * Install 1Password X in Firefox and set it up
 * Set up vscode SSH connections and settings
 * Configure name/email with git
+* Authorize and set up dropbox
