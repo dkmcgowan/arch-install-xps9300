@@ -10,7 +10,7 @@ This script comes with 2 options for the Display Manager and the Desktop Environ
 
 All features of the XPS 9300 are set up and functional including hibernation, fingerprint reader, correct display driver, TLP is set up to help conserve battery, and throttled for throttling issues.
 
-Howdy for IR camera login is not currently set up.
+Howdy for IR camera login is not currently set up. It requires 5 additional AUR packages, some that require certain python 2 libraries, and the overall functionality does not integrate as well as password and fingerprint. It does work if interested, follow instructions [Howdy](https://wiki.archlinux.org/index.php/Howdy)
 
 ## Assumptions
 
