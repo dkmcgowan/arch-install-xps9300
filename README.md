@@ -1,14 +1,16 @@
 # Arch install scripts for Dell XPS 9300
 
-This script is most likely outdated and is only here for a reference. You should always check for the latest information on the [ArchWiki Installation Guide](https://wiki.archlinux.org/index.php/installation_guide).
+This script is most likely outdated and is only here for a reference. You should always check for the latest information on the [ArchWiki Installation Guide](https://wiki.archlinux.org/index.php/installation_guide). Things change a lot and releases happen all the time, the ArchWiki will keep all that information current.
 
-This script is customized to my specific needs, but can be used as a basis for other installation scripts.  It is recommended to fork this and customize for your own needs. It is also highly recommended to study this script and understand what each command is doing and why.  A full understand of Arch will be very helpful. This script was created to help me quickly reinstall Arch while I experiment.
+This script is customized to my specific needs, but can be used as a basis for other installation scripts.  It is recommended to fork this and customize for your own needs. It is also highly recommended to study this script and understand what each command is doing and why.  A full understand of your system, what it's running, and how it was set up will be very helpful. This script was created to help me quickly reinstall Arch while I experiment with more dangerous and experimental changes.
 
-This script installs all essential base packages, terminal tools, Xorg, display manager, desktop environment, and a handful of useful applications.
+This script installs all essential base packages, terminal tools, Xorg, display manager, desktop environment, and a handful of applications I find essential.
 
 This script comes with 2 options for the Display Manager and the Desktop Environment.  You can choose LightDM/Cinnamon or GDM/Gnome. These are the only two current options because they both support and work well with the UHD screen on the XPS 9300.
 
-All features of the XPS 9300 are set up and functional including hibernation and the fingerprint reader.
+All features of the XPS 9300 are set up and functional including hibernation, fingerprint reader, correct display driver, TLP is set up to help conserve battery, and throttled for throttling issues.
+
+Howdy for IR camera login is not currently set up.
 
 ## Assumptions
 
