@@ -122,6 +122,7 @@ systemctl enable NetworkManager.service
 systemctl enable tlp.service
 systemctl enable bluetooth.service
 systemctl enable org.cups.cupsd.service
+systemctl enable lenovo_fix.service
 
 echo "\n:: Generating final script...\n"
 cat <<EOM > /home/$4/final.install
