@@ -24,10 +24,13 @@ Download the latest live disk and prepare a USB drive as explained in [Prepare a
 
 Connect to the internet  
 *iwctl station wlan0 connect [ssid]*  
+  
 Install git  
 *pacman -Sy git*  
+  
 Clone locally this repository  
 *git clone https://github.com/dkmcgowan/arch-install-xps9300*  
+  
 Execute the script sending output to console and install.log  
 *zsh arch-xps9300.install [ssid] [passphrase] [root-password] [username] [password] [printer-ipaddress] 2>&1 | tee install.log*  
 
