@@ -22,7 +22,7 @@ cat <<EOM > /etc/hosts
 # See hosts(5) for details.
 127.0.0.1       localhost
 ::1             localhost
-$9		        $8.localdomain    $8
+$9              $8.localdomain    $8
 EOM
 
 echo "\n:: Generating initramfs...\n"
