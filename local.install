@@ -107,8 +107,10 @@ fi
 
 echo "\n:: Installing fingerprint reader (fprintd)...\n"
 pacman -Syu fprintd --noconfirm
-sed -i "s/auth       include      system-auth/auth       sufficient   pam_unix.so try_first_pass likeauth nullok\nauth       sufficient   pam_fprintd.so\nauth       include      system-auth/" /etc/pam.d/cinnamon-screensaver
-sed -i "s/auth        include     system-login/auth        sufficient  pam_unix.so try_first_pass likeauth nullok\nauth        sufficient  pam_fprintd.so\nauth        include     system-login/" /etc/pam.d/lightdm
+if [[ $7 == "1" ]] then
+    sed -i "s/auth       include      system-auth/auth       sufficient   pam_unix.so try_first_pass likeauth nullok\nauth       sufficient   pam_fprintd.so\nauth       include      system-auth/" /etc/pam.d/cinnamon-screensaver
+    sed -i "s/auth        include     system-login/auth        sufficient  pam_unix.so try_first_pass likeauth nullok\nauth        sufficient  pam_fprintd.so\nauth        include     system-login/" /etc/pam.d/lightdm
+fi
 sed -i "s/auth		include		system-auth/auth		sufficient	pam_unix.so try_first_pass likeauth nullok\nauth		sufficient	pam_fprintd.so\nauth		include		system-auth/" /etc/pam.d/sudo
 sed -i "s/auth      include   system-login/auth      sufficient pam_unix.so try_first_pass likeauth nullok\nauth      sufficient pam_fprintd.so\nauth      include    system-login/" /etc/pam.d/system-local-login
 
@@ -170,6 +172,7 @@ echo "\n:: Setting up fingerprint reader...\n"
 fprintd-enroll
 
 read "?Installation complete... "
+rm /home/$4/.config/autostart/installer.desktop
 rm /home/$4/final.install
 EOM
 chown -R $4:$4 /home/$4/final.install
