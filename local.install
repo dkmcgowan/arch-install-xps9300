@@ -88,6 +88,9 @@ if [[ $7 == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-themes.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
+else
+    su $4 -c "git clone https://aur.archlinux.org/gnome-shell-extension-appindicator.git"
+    su $4 -c "git clone https://aur.archlinux.org/gnome-shell-extension-dash-to-dock.git"
 fi
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $4 -c \"makepkg -sri --noconfirm\"" \;
 
