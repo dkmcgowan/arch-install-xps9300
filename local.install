@@ -1,5 +1,5 @@
 #!/bin/zsh
-set -x
+set -ex
 
 echo "\n:: Setting local timezone...\n"
 ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
