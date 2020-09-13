@@ -171,7 +171,6 @@ else
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
     #background image, how to add images to background folder
     #blank screen time is default to 5, screensaver?
-    #set default applications, blank out calendar and photos should be image viewer (maybe set them all)
     #enable automatic date & time
     
     gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
@@ -202,6 +201,12 @@ rm /home/$4/final.install
 EOM
 chown -R $4:$4 /home/$4/final.install
 chmod +x /home/$4/final.install
+
+if [[ $7 == "2" ]] then
+    echo "\n:: Setting mime types...\n"
+    su $4 -c "mkdir -p /home/$4/.config"
+    su $4 -c "/arch-install-xps9300/mimeapps.list /home/$4/.config/mimeapps.list"
+fi
 
 echo "\n:: Generating final script autostart file...\n"
 su $4 -c "mkdir -p /home/$4/.config/autostart"
