@@ -171,7 +171,7 @@ nmcli device wifi connect $1 password $2
 
 if [[ "$6" != "na" ]] then
   echo "\n:: Setting up printer...\n"
-  hp-setup -ia $6
+  hp-setup -iax $6
 fi
 
 echo "\n:: Setting up fingerprint reader...\n"
