@@ -69,7 +69,7 @@ else
 fi
 
 echo "\n:: Installing additional packages (official)...\n"
-pacman -Syu cheese firefox eog networkmanager gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 cups bluez bluez-utils ttf-dejavu imagemagick --noconfirm
+pacman -Syu cheese firefox eog networkmanager gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 cups ttf-dejavu imagemagick --noconfirm
 
 echo "\n:: Installing additional packages (AUR)...\n"
 su $4 -c "mkdir /home/$4/packages"
@@ -125,10 +125,8 @@ else
     systemctl enable gdm.service
 fi
 systemctl enable NetworkManager.service
-systemctl enable tlp.service
-systemctl enable bluetooth.service
 systemctl enable org.cups.cupsd.service
-systemctl enable lenovo_fix.service
+
 
 echo "\n:: Generating final script...\n"
 cat <<EOM > /home/$4/final.install
@@ -138,6 +136,11 @@ echo "\n:: Setting volume...\n"
 pacmd set-sink-volume 0 33000
 pacmd set-sink-mute 0 0
 pacmd set-source-volume 1 42500
+
+pacman -Syu throttled tlp gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb bluez bluez-utils
+systemctl enable bluetooth.service
+systemctl enable tlp.service
+systemctl enable lenovo_fix.service
 
 echo "\n:: Customizing desktop...\n"
 if [[ $7 == "1" ]] then
