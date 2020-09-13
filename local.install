@@ -171,14 +171,15 @@ else
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
     #background image, how to add images to background folder
     #blank screen time is default to 5, screensaver?
-    #enable automatic date & time
-    
     gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
     gnome-extensions enable dash-to-dock@micxgx.gmail.com
     gnome-extensions enable launch-new-instance@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable horizontal-workspaces@gnome-shell-extensions.gcampax.github.com
+    
+    sudo systemctl enable systemd-timesyncd
+    sudo systemctl start systemd-timesyncd
 fi
 currentprofile=\$(gsettings get org.gnome.Terminal.ProfilesList default)
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-rows 28
