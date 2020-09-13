@@ -8,9 +8,11 @@ hwclock --systohc
 echo "\n:: Configuring localization...\n"
 sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen
 locale-gen
+
 cat <<EOM > /etc/locale.conf
 LANG=en_US.UTF-8
 EOM
+
 cat <<EOM > /etc/vconsole.conf
 FONT=ter-132b
 FONT_MAP=8859-2
@@ -18,6 +20,7 @@ EOM
 
 echo "\n:: Configuring network...\n"
 echo "$8" >> /etc/hostname
+
 cat <<EOM > /etc/hosts
 # Static table lookup for hostnames.
 # See hosts(5) for details.
@@ -40,6 +43,7 @@ sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"\"\nGRUB_FONT=\"\/boot\/g
 sed -i "s/#GRUB_COLOR/GRUB_COLOR/" /etc/default/grub
 sed -i "s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" /etc/default/grub
 sed -i "s/GRUB_TIMEOUT_STYLE=menu/GRUB_TIMEOUT_STYLE=hidden/" /etc/default/grub
+
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 grub-mkfont -s 30 -o /boot/grubfont.pf2 /usr/share/fonts/TTF/DejaVuSansMono.ttf
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -47,6 +51,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 echo "\n:: Creating system user and configuration...\n"
 useradd -m -G wheel,lp,rfkill,log,adm,sys,systemd-journal,uucp -s /bin/zsh $4
 echo $4:$5 | chpasswd
+
 if [[ $7 == "1" ]] then
     su $4 -c "mkdir -p /home/$4/Pictures"
     cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/
@@ -55,12 +60,14 @@ elif [[ $7 == "2" ]] then
     cp /arch-install-xps9300/backgrounds/* /home/$4/.local/share/backgrounds/
 fi
 chown -R $4:$4 /home/$4/
+
 cat <<EOM > /home/$4/.vimrc
 source \$VIMRUNTIME/defaults.vim
 set clipboard=unnamedplus
 set number
 EOM
 chown -R $4:$4 /home/$4/.vimrc
+
 echo "Defaults passwd_timeout=0" | EDITOR="tee -a" visudo
 echo "$4 ALL=(ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo # needed for makepkg to work in this script
 
@@ -79,16 +86,8 @@ pacman -Syu cheese firefox eog networkmanager gnome-screenshot gnome-keyring gno
 
 echo "\n:: Installing additional packages (AUR)...\n"
 su $4 -c "mkdir /home/$4/packages"
-cd /home/$4/packages
-su $4 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
-cd /home/$4/packages/libfprint-tod-git
-su $4 -c "makepkg -sri --noconfirm"
-cd /home/$4/packages
-su $4 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
-cd /home/$4/packages/libfprint-2-tod1-xps9300-bin
-su $4 -c "makepkg -sri --noconfirm"
-cd /home/$4/packages
 
+cd /home/$4/packages
 if [[ $7 == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/lightdm-slick-greeter.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
@@ -100,7 +99,19 @@ elif [[ $7 == "2" ]] then
 fi
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $4 -c \"makepkg -sri --noconfirm\"" \;
 
+#installed not in loop to guarantee order
+cd /home/$4/packages
+su $4 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
+cd /home/$4/packages/libfprint-tod-git
+su $4 -c "makepkg -sri --noconfirm"
+cd /home/$4/packages
+su $4 -c "git clone https://aur.archlinux.org/libfprint-2-tod1-xps9300-bin.git"
+cd /home/$4/packages/libfprint-2-tod1-xps9300-bin
+su $4 -c "makepkg -sri --noconfirm"
+cd /home/$4/packages
+
 echo "\n:: Installing package dropbox...\n"
+#installed not in loop to guarantee order
 cd /home/$4/packages
 su $4 -c "git clone https://aur.archlinux.org/dropbox.git"
 cd /home/$4/packages/dropbox
@@ -111,6 +122,11 @@ cd /home/$4/packages
 if [[ $7 == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/nemo-dropbox.git"
     cd /home/$4/packages/nemo-dropbox
+    su $4 -c "makepkg -sri --noconfirm"
+    cd /home/$4/packages
+elif [[ $7 == "2" ]] then
+    su $4 -c "git clone https://aur.archlinux.org/nautilus-dropbox.git"
+    cd /home/$4/packages/nautilus-dropbox
     su $4 -c "makepkg -sri --noconfirm"
     cd /home/$4/packages
 fi
@@ -167,7 +183,7 @@ if [[ $7 == "1" ]] then
     gsettings set org.nemo.desktop trash-icon-visible true
     gsettings set org.nemo.desktop home-icon-visible true
     gsettings set org.cinnamon.settings-daemon.plugins.power lock-on-suspend true
-else
+elif [[ $7 == "2" ]] then
     gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
     gsettings set org.gnome.desktop.interface clock-format '12h'
@@ -187,9 +203,12 @@ else
     sudo systemctl enable systemd-timesyncd
     sudo systemctl start systemd-timesyncd
 fi
-currentprofile=\$(gsettings get org.gnome.Terminal.ProfilesList default)
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-rows 28
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-columns 120
+
+if [[ $7 == "1" || $7 == "2" ]] then
+    currentprofile=\$(gsettings get org.gnome.Terminal.ProfilesList default)
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-rows 28
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-columns 120
+fi
 
 echo "\n:: Connecting to the internet...\n"
 nmcli device wifi connect $1 password $2
@@ -203,7 +222,9 @@ echo "\n:: Setting up fingerprint reader...\n"
 fprintd-enroll
 
 read "?Installation complete... "
-rm /home/$4/.config/autostart/installer.desktop
+if [[ $7 == "1" || $7 == "2" ]] then
+    rm /home/$4/.config/autostart/installer.desktop
+fi
 rm /home/$4/final.install
 EOM
 chown -R $4:$4 /home/$4/final.install
@@ -215,17 +236,19 @@ if [[ $7 == "2" ]] then
     su $4 -c "/arch-install-xps9300/mimeapps.list /home/$4/.config/mimeapps.list"
 fi
 
-echo "\n:: Generating final script autostart file...\n"
-su $4 -c "mkdir -p /home/$4/.config/autostart"
-cat <<EOM > /home/$4/.config/autostart/installer.desktop
-[Desktop Entry]
-Type=Application
-Exec=gnome-terminal -e '/home/$4/final.install'
-X-GNOME-Autostart-enabled=true
-NoDisplay=false
-Hidden=false
-Name[en_US]=installer
-Comment[en_US]=No description
-X-GNOME-Autostart-Delay=2
-EOM
-chown -R $4:$4 /home/$4/.config/autostart/installer.desktop
+if [[ $7 == "1" || $7 == "2" ]] then
+    echo "\n:: Generating final script autostart file...\n"
+    su $4 -c "mkdir -p /home/$4/.config/autostart"
+    cat <<EOM > /home/$4/.config/autostart/installer.desktop
+    [Desktop Entry]
+    Type=Application
+    Exec=gnome-terminal -e '/home/$4/final.install'
+    X-GNOME-Autostart-enabled=true
+    NoDisplay=false
+    Hidden=false
+    Name[en_US]=installer
+    Comment[en_US]=No description
+    X-GNOME-Autostart-Delay=2
+    EOM
+    chown -R $4:$4 /home/$4/.config/autostart/installer.desktop
+fi
