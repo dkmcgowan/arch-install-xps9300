@@ -1,4 +1,5 @@
 #!/bin/zsh
+set -x
 
 echo "\n:: Setting local timezone...\n"
 ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
@@ -46,8 +47,13 @@ grub-mkconfig -o /boot/grub/grub.cfg
 echo "\n:: Creating system user and configuration...\n"
 useradd -m -G wheel,lp,rfkill,log,adm,sys,systemd-journal,uucp -s /bin/zsh $4
 echo $4:$5 | chpasswd
-su $4 -c "mkdir -p /home/$4/Pictures"
-cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/
+if [[ $7 == "1" ]] then
+    su $4 -c "mkdir -p /home/$4/Pictures"
+    cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/
+elif [[ $7 == "2" ]] then
+    su $4 -c "mkdir -p /home/$4/.local/share/backgrounds"
+    cp /arch-install-xps9300/backgrounds/* /home/$4/.local/share/backgrounds/
+fi
 chown -R $4:$4 /home/$4/
 cat <<EOM > /home/$4/.vimrc
 source \$VIMRUNTIME/defaults.vim
@@ -63,7 +69,7 @@ if [[ $7 == "1" ]] then
     echo "\n:: Installing Cinnamon and LightDM...\n"
     pacman -Syu xorg lightdm cinnamon blueberry nemo nemo-share xed xreader system-config-printer --noconfirm
     sed -i "s/#greeter-session=example-gtk-gnome/greeter-session=lightdm-slick-greeter/" /etc/lightdm/lightdm.conf
-else
+elif [[ $7 == "2" ]] then
     echo "\n:: Installing GNOME and GDM...\n"
     pacman -Syu xorg gdm gnome-shell gnome-shell-extensions gnome-session gnome-menus gnome-settings-daemon gnome-control-center gnome-software gnome-tweaks gedit evince gnome-backgrounds gnome-documents mutter nautilus nautilus-share sushi --noconfirm
 fi
@@ -88,7 +94,7 @@ if [[ $7 == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-themes.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
-else
+elif [[ $7 == "2" ]] then
     su $4 -c "git clone https://aur.archlinux.org/gnome-shell-extension-appindicator.git"
     su $4 -c "git clone https://aur.archlinux.org/gnome-shell-extension-dash-to-dock.git"
 fi
@@ -169,7 +175,7 @@ else
     gsettings set org.gnome.desktop.peripherals.touchpad speed 0.44852941176470584
     gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-    #background image, how to add images to background folder
+    gsettings set org.gnome.desktop.background picture-uri 'file:///home/$4/.local/share/backgrounds/tower_night_city_architecture_3840x2400.jpg'
     #blank screen time is default to 5, screensaver?
     gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
     gnome-extensions enable dash-to-dock@micxgx.gmail.com
