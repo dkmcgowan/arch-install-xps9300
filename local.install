@@ -137,7 +137,7 @@ pacmd set-sink-volume 0 33000
 pacmd set-sink-mute 0 0
 pacmd set-source-volume 1 42500
 
-pacman -Syu throttled tlp gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb bluez bluez-utils
+pacman -Syu throttled tlp i7z gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb bluez bluez-utils
 systemctl enable bluetooth.service
 systemctl enable tlp.service
 systemctl enable lenovo_fix.service
