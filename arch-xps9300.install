@@ -1,5 +1,5 @@
 #!/bin/zsh
-set -ex
+set -e
 
 function finish {
   echo "\n:: Unmounting all partitions...\n"
