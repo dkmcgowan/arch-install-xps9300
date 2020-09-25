@@ -1,6 +1,13 @@
 #!/bin/zsh
 set -ex
 
+function finish {
+  echo "\"${last_command}\" command filed with exit code $?."
+}
+
+trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
+trap finish EXIT
+
 echo "\n:: Setting local timezone...\n"
 ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
 hwclock --systohc
