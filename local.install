@@ -78,7 +78,7 @@ if [[ $7 == "1" ]] then
     sed -i "s/#greeter-session=example-gtk-gnome/greeter-session=lightdm-slick-greeter/" /etc/lightdm/lightdm.conf
 elif [[ $7 == "2" ]] then
     echo "\n:: Installing GNOME and GDM...\n"
-    pacman -Syu xorg gdm gnome-shell gnome-shell-extensions gnome-session gnome-menus gnome-settings-daemon gnome-control-center gnome-software gnome-tweaks gedit evince gnome-backgrounds gnome-documents mutter nautilus nautilus-share sushi --noconfirm
+    pacman -Syu xorg gdm gnome-shell gnome-shell-extensions gnome-session gnome-menus gnome-settings-daemon gnome-control-center gnome-software gnome-tweaks gedit evince gnome-backgrounds gnome-documents mutter nautilus nautilus-share --noconfirm
 fi
 
 echo "\n:: Installing additional packages (official)...\n"
@@ -158,7 +158,11 @@ pacmd set-sink-volume 0 33000
 pacmd set-sink-mute 0 0
 pacmd set-source-volume 1 42500
 
-pacman -Syu throttled tlp i7z gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb bluez bluez-utils
+pacman -Syu throttled tlp i7z htop glances s-tui gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb bluez bluez-utils
+
+if [[ $7 == "2" ]] then
+    pacman -Syu sushi
+fi
 
 systemctl enable bluetooth.service
 systemctl start bluetooth.service
