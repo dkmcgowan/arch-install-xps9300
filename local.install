@@ -150,7 +150,7 @@ sed -i "s/auth      include   system-login/auth      sufficient pam_unix.so try_
 echo "\n:: Enabling services...\n"
 if [[ $7 == "1" ]] then
     systemctl enable lightdm.service
-else
+elif [[ $7 == "2" ]] then
     systemctl enable gdm.service
 fi
 systemctl enable NetworkManager.service
@@ -166,9 +166,18 @@ pacmd set-sink-mute 0 0
 pacmd set-source-volume 1 42500
 
 pacman -Syu throttled tlp i7z gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb bluez bluez-utils
+
 systemctl enable bluetooth.service
+systemctl start bluetooth.service
+
 systemctl enable tlp.service
+systemctl start tlp.service
+
 systemctl enable lenovo_fix.service
+systemctl start lenovo_fix.service
+
+systemctl enable systemd-timesyncd
+systemctl start systemd-timesyncd
 
 echo "\n:: Customizing desktop...\n"
 if [[ $7 == "1" ]] then
@@ -199,16 +208,13 @@ elif [[ $7 == "2" ]] then
     gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
     gsettings set org.gnome.desktop.background picture-uri 'file:///home/$4/.local/share/backgrounds/tower_night_city_architecture_3840x2400.jpg'
-    #blank screen time is default to 5, screensaver?
+    
     gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
     gnome-extensions enable dash-to-dock@micxgx.gmail.com
     gnome-extensions enable launch-new-instance@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable horizontal-workspaces@gnome-shell-extensions.gcampax.github.com
-    
-    sudo systemctl enable systemd-timesyncd
-    sudo systemctl start systemd-timesyncd
 fi
 
 if [[ $7 == "1" || $7 == "2" ]] then
