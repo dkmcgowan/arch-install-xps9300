@@ -200,6 +200,7 @@ fi
 currentprofile=\$(gsettings get org.gnome.Terminal.ProfilesList default)
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-rows 28
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-columns 120
+#set default theme to "GNOME dark"
 
 echo "\n:: Connecting to the internet...\n"
 nmcli device wifi connect $1 password $2
