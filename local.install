@@ -52,10 +52,10 @@ echo "\n:: Creating system user and configuration...\n"
 useradd -m -G wheel,lp,rfkill,log,adm,sys,systemd-journal,uucp -s /bin/zsh $4
 echo $4:$5 | chpasswd
 
-if [[ $7 == "1" ]] then
+if [[ "$7" == "1" ]] then
     su $4 -c "mkdir -p /home/$4/Pictures"
     cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/
-elif [[ $7 == "2" ]] then
+elif [[ "$7" == "2" ]] then
     su $4 -c "mkdir -p /home/$4/.local/share/backgrounds"
     cp /arch-install-xps9300/backgrounds/* /home/$4/.local/share/backgrounds/
 fi
@@ -72,34 +72,34 @@ echo "Defaults passwd_timeout=0" | EDITOR="tee -a" visudo
 echo "$4 ALL=(ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo # needed for makepkg to work in this script
 
 echo "\n:: Setting up DM/DE...\n"
-if [[ $7 == "1" ]] then
+if [[ "$7" == "1" ]] then
     echo "\n:: Installing Cinnamon and LightDM...\n"
     pacman -Syu xorg lightdm cinnamon blueberry nemo nemo-share xed xreader system-config-printer --noconfirm
     sed -i "s/#greeter-session=example-gtk-gnome/greeter-session=lightdm-slick-greeter/" /etc/lightdm/lightdm.conf
-elif [[ $7 == "2" ]] then
+elif [[ "$7" == "2" ]] then
     echo "\n:: Installing GNOME and GDM...\n"
-    pacman -Syu xorg gdm gnome-shell gnome-shell-extensions gnome-session gnome-menus gnome-settings-daemon gnome-control-center gnome-software gnome-tweaks gedit evince gnome-backgrounds gnome-documents mutter nautilus nautilus-share --noconfirm
+    pacman -Syu xorg gdm gnome-shell gnome-shell-extensions gnome-session gnome-menus gnome-settings-daemon gnome-control-center gnome-software gnome-tweaks gedit evince gnome-backgrounds gnome-documents mutter nautilus nautilus-share sushi --noconfirm
 fi
 
 echo "\n:: Installing additional packages (official)...\n"
-pacman -Syu cheese firefox eog networkmanager gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 cups ttf-dejavu imagemagick --noconfirm
+pacman -Syu cheese firefox chromium eog networkmanager gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 cups ttf-dejavu imagemagick throttled tlp i7z htop glances s-tui gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb bluez bluez-utils --noconfirm
 
 echo "\n:: Installing additional packages (AUR)...\n"
 su $4 -c "mkdir /home/$4/packages"
 
 cd /home/$4/packages
-if [[ $7 == "1" ]] then
+if [[ "$7" == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/lightdm-slick-greeter.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-themes.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
-elif [[ $7 == "2" ]] then
+elif [[ "$7" == "2" ]] then
     su $4 -c "git clone https://aur.archlinux.org/gnome-shell-extension-appindicator.git"
     su $4 -c "git clone https://aur.archlinux.org/gnome-shell-extension-dash-to-dock.git"
 fi
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $4 -c \"makepkg -sri --noconfirm\"" \;
 
-#installed not in loop to guarantee order
+echo "\n:: Installing fingerprint reader libraries...\n"
 cd /home/$4/packages
 su $4 -c "git clone https://aur.archlinux.org/libfprint-tod-git.git"
 cd /home/$4/packages/libfprint-tod-git
@@ -111,7 +111,6 @@ su $4 -c "makepkg -sri --noconfirm"
 cd /home/$4/packages
 
 echo "\n:: Installing package dropbox...\n"
-#installed not in loop to guarantee order
 cd /home/$4/packages
 su $4 -c "git clone https://aur.archlinux.org/dropbox.git"
 cd /home/$4/packages/dropbox
@@ -119,12 +118,12 @@ cd /home/$4/packages/dropbox
 #su $4 -c "gpg --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E"
 su $4 -c "makepkg -sri --skippgpcheck --noconfirm"
 cd /home/$4/packages
-if [[ $7 == "1" ]] then
+if [[ "$7" == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/nemo-dropbox.git"
     cd /home/$4/packages/nemo-dropbox
     su $4 -c "makepkg -sri --noconfirm"
     cd /home/$4/packages
-elif [[ $7 == "2" ]] then
+elif [[ "$7" == "2" ]] then
     su $4 -c "git clone https://aur.archlinux.org/nautilus-dropbox.git"
     cd /home/$4/packages/nautilus-dropbox
     su $4 -c "makepkg -sri --noconfirm"
@@ -133,7 +132,7 @@ fi
 
 echo "\n:: Installing fingerprint reader (fprintd)...\n"
 pacman -Syu fprintd --noconfirm
-if [[ $7 == "1" ]] then
+if [[ "$7" == "1" ]] then
     sed -i "s/auth       include      system-auth/auth       sufficient   pam_unix.so try_first_pass likeauth nullok\nauth       sufficient   pam_fprintd.so\nauth       include      system-auth/" /etc/pam.d/cinnamon-screensaver
     sed -i "s/auth        include     system-login/auth        sufficient  pam_unix.so try_first_pass likeauth nullok\nauth        sufficient  pam_fprintd.so\nauth        include     system-login/" /etc/pam.d/lightdm
 fi
@@ -141,13 +140,17 @@ sed -i "s/auth		include		system-auth/auth		sufficient	pam_unix.so try_first_pass
 sed -i "s/auth      include   system-login/auth      sufficient pam_unix.so try_first_pass likeauth nullok\nauth      sufficient pam_fprintd.so\nauth      include    system-login/" /etc/pam.d/system-local-login
 
 echo "\n:: Enabling services...\n"
-if [[ $7 == "1" ]] then
+if [[ "$7" == "1" ]] then
     systemctl enable lightdm.service
-elif [[ $7 == "2" ]] then
+elif [[ "$7" == "2" ]] then
     systemctl enable gdm.service
 fi
 systemctl enable NetworkManager.service
 systemctl enable org.cups.cupsd.service
+systemctl enable bluetooth.service
+systemctl enable tlp.service
+systemctl enable lenovo_fix.service
+systemctl enable systemd-timesyncd
 
 echo "\n:: Generating final script...\n"
 cat <<EOM > /home/$4/final.install
@@ -158,26 +161,8 @@ pacmd set-sink-volume 0 33000
 pacmd set-sink-mute 0 0
 pacmd set-source-volume 1 42500
 
-pacman -Syu throttled tlp i7z htop glances s-tui gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb bluez bluez-utils
-
-if [[ $7 == "2" ]] then
-    pacman -Syu sushi
-fi
-
-systemctl enable bluetooth.service
-systemctl start bluetooth.service
-
-systemctl enable tlp.service
-systemctl start tlp.service
-
-systemctl enable lenovo_fix.service
-systemctl start lenovo_fix.service
-
-systemctl enable systemd-timesyncd
-systemctl start systemd-timesyncd
-
 echo "\n:: Customizing desktop...\n"
-if [[ $7 == "1" ]] then
+if [[ "$7" == "1" ]] then
     gsettings set org.cinnamon.theme name 'Mint-Y-Dark-Blue'
     gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark-Blue'
     gsettings set org.cinnamon.desktop.wm.preferences theme 'Mint-Y-Dark'
@@ -190,13 +175,12 @@ if [[ $7 == "1" ]] then
     gsettings set org.cinnamon.settings-daemon.peripherals.touchpad horizontal-scrolling true
     gsettings set org.cinnamon enabled-applets "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:show-desktop@cinnamon.org:1', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:8:systray@cinnamon.org:3', 'panel1:right:9:xapp-status@cinnamon.org:4', 'panel1:right:10:notifications@cinnamon.org:5', 'panel1:right:11:printers@cinnamon.org:6', 'panel1:right:12:removable-drives@cinnamon.org:7', 'panel1:right:14:network@cinnamon.org:9', 'panel1:right:15:sound@cinnamon.org:10', 'panel1:right:16:power@cinnamon.org:11', 'panel1:right:17:calendar@cinnamon.org:12', 'panel1:right:6:inhibit@cinnamon.org:14', 'panel1:right:3:workspace-switcher@cinnamon.org:17']"
     gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/$4/Pictures/full_moon_minimalism_3840x2400.jpg'
-    #gsettings set org.cinnamon.desktop.background picture-options 'zoom'
     gsettings set org.cinnamon.desktop.interface clock-use-24h false
     gsettings set org.nemo.desktop computer-icon-visible true
     gsettings set org.nemo.desktop trash-icon-visible true
     gsettings set org.nemo.desktop home-icon-visible true
     gsettings set org.cinnamon.settings-daemon.plugins.power lock-on-suspend true
-elif [[ $7 == "2" ]] then
+elif [[ "$7" == "2" ]] then
     gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
     gsettings set org.gnome.desktop.interface clock-format '12h'
@@ -213,11 +197,9 @@ elif [[ $7 == "2" ]] then
     gnome-extensions enable horizontal-workspaces@gnome-shell-extensions.gcampax.github.com
 fi
 
-if [[ $7 == "1" ]] || [[ $7 == "2" ]] then
-    currentprofile=\$(gsettings get org.gnome.Terminal.ProfilesList default)
-    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-rows 28
-    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-columns 120
-fi
+currentprofile=\$(gsettings get org.gnome.Terminal.ProfilesList default)
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-rows 28
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-columns 120
 
 echo "\n:: Connecting to the internet...\n"
 nmcli device wifi connect $1 password $2
@@ -237,7 +219,7 @@ EOM
 chown -R $4:$4 /home/$4/final.install
 chmod +x /home/$4/final.install
 
-if [[ $7 == "2" ]] then
+if [[ "$7" == "2" ]] then
     echo "\n:: Setting mime types...\n"
     su $4 -c "mkdir -p /home/$4/.config"
     su $4 -c "/arch-install-xps9300/mimeapps.list /home/$4/.config/mimeapps.list"
