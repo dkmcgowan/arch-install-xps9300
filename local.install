@@ -205,7 +205,6 @@ elif [[ $7 == "2" ]] then
     gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
     gsettings set org.gnome.desktop.background picture-uri 'file:///home/$4/.local/share/backgrounds/tower_night_city_architecture_3840x2400.jpg'
-    
     gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
     gnome-extensions enable dash-to-dock@micxgx.gmail.com
     gnome-extensions enable launch-new-instance@gnome-shell-extensions.gcampax.github.com
@@ -214,7 +213,7 @@ elif [[ $7 == "2" ]] then
     gnome-extensions enable horizontal-workspaces@gnome-shell-extensions.gcampax.github.com
 fi
 
-if [[ $7 == "1" || $7 == "2" ]] then
+if [[ $7 == "1" ]] || [[ $7 == "2" ]] then
     currentprofile=\$(gsettings get org.gnome.Terminal.ProfilesList default)
     gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-rows 28
     gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-columns 120
@@ -232,9 +231,7 @@ echo "\n:: Setting up fingerprint reader...\n"
 fprintd-enroll
 
 read "?Installation complete... "
-if [[ $7 == "1" || $7 == "2" ]] then
-    rm /home/$4/.config/autostart/installer.desktop
-fi
+rm /home/$4/.config/autostart/installer.desktop
 rm /home/$4/final.install
 EOM
 chown -R $4:$4 /home/$4/final.install
@@ -246,19 +243,17 @@ if [[ $7 == "2" ]] then
     su $4 -c "/arch-install-xps9300/mimeapps.list /home/$4/.config/mimeapps.list"
 fi
 
-if [[ $7 == "1" || $7 == "2" ]] then
-    echo "\n:: Generating final script autostart file...\n"
-    su $4 -c "mkdir -p /home/$4/.config/autostart"
-    cat <<EOM > /home/$4/.config/autostart/installer.desktop
-    [Desktop Entry]
-    Type=Application
-    Exec=gnome-terminal -e '/home/$4/final.install'
-    X-GNOME-Autostart-enabled=true
-    NoDisplay=false
-    Hidden=false
-    Name[en_US]=installer
-    Comment[en_US]=No description
-    X-GNOME-Autostart-Delay=2
-    EOM
-    chown -R $4:$4 /home/$4/.config/autostart/installer.desktop
-fi
+echo "\n:: Generating final script autostart file...\n"
+su $4 -c "mkdir -p /home/$4/.config/autostart"
+cat <<EOM > /home/$4/.config/autostart/installer.desktop
+[Desktop Entry]
+Type=Application
+Exec=gnome-terminal -e '/home/$4/final.install'
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Hidden=false
+Name[en_US]=installer
+Comment[en_US]=No description
+X-GNOME-Autostart-Delay=2
+EOM
+chown -R $4:$4 /home/$4/.config/autostart/installer.desktop
