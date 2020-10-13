@@ -222,7 +222,8 @@ chmod +x /home/$4/final.install
 if [[ "$7" == "2" ]] then
     echo "\n:: Setting mime types...\n"
     su $4 -c "mkdir -p /home/$4/.config"
-    su $4 -c "/arch-install-xps9300/mimeapps.list /home/$4/.config/mimeapps.list"
+    cp /arch-install-xps9300/mimeapps.list /home/$4/.config/mimeapps.list
+    chown -R $4:$4 /home/$4/.config/mimeapps.list
 fi
 
 echo "\n:: Generating final script autostart file...\n"
