@@ -47,7 +47,7 @@ These are notes for things on my default installation that I did not include yet
 
 * Set up reminna remote desktop connections
 * Connect online accounts (gdrive)
-* Install 1Password X in Firefox and set it up
-* Set up vscode SSH connections and settings
+* Install 1Password X in Firefox and Chromium
+* Set up vscode SSH connections and settings (use sshfs, remote development extension doesn't work on code oss)
 * Configure name/email with git
-* Authorize and set up dropbox
+* Authorize and set up dropbox (selective sync)
