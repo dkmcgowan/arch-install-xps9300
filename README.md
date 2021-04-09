@@ -51,3 +51,4 @@ These are notes for things on my default installation that I did not include yet
 * Set up vscode SSH connections and settings (use sshfs, remote development extension doesn't work on code oss)
 * Configure name/email with git
 * Authorize and set up dropbox (selective sync)
+* Set Firefox default zoom to 120%
