@@ -124,8 +124,6 @@ if [[ "$7" == "1" ]] then
     sed -i "s/auth       include      system-auth/auth       sufficient   pam_unix.so try_first_pass likeauth nullok\nauth       sufficient   pam_fprintd.so\nauth       include      system-auth/" /etc/pam.d/cinnamon-screensaver
     sed -i "s/auth        include     system-login/auth        sufficient  pam_unix.so try_first_pass likeauth nullok\nauth        sufficient  pam_fprintd.so\nauth        include     system-login/" /etc/pam.d/lightdm
 fi
-sed -i "s/auth		include		system-auth/auth		sufficient	pam_unix.so try_first_pass likeauth nullok\nauth		sufficient	pam_fprintd.so\nauth		include		system-auth/" /etc/pam.d/sudo
-sed -i "s/auth      include   system-login/auth      sufficient pam_unix.so try_first_pass likeauth nullok\nauth      sufficient pam_fprintd.so\nauth      include    system-login/" /etc/pam.d/system-local-login
 
 echo "\n:: Disable suspend for sound device..\n"
 sed -i "s/load-module module-suspend-on-file/#load-module module-suspend-on-file/" /etc/pulse/default.pa
