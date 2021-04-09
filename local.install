@@ -44,14 +44,6 @@ sed -i "s/#GRUB_COLOR/GRUB_COLOR/" /etc/default/grub
 sed -i "s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" /etc/default/grub
 sed -i "s/GRUB_TIMEOUT_STYLE=menu/GRUB_TIMEOUT_STYLE=hidden/" /etc/default/grub
 
-echo "\n:: Disable suspend for sound device..\n"
-sed -i "s/load-module module-suspend-on-file/#load-module module-suspend-on-file/" /etc/pulse/default.pa
-cat <<EOM > /etc/modprobe.d/audio_disable_powersave.conf
-options snd_hda_intel power_save=0 power_save_controller=N
-EOM
-sed -i "s/#SOUND_POWER_SAVE_ON_AC=0/SOUND_POWER_SAVE_ON_AC=0/" /etc/tlp.conf
-sed -i "s/#SOUND_POWER_SAVE_ON_BAT=1/SOUND_POWER_SAVE_ON_BAT=0/" /etc/tlp.conf
-
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 grub-mkfont -s 30 -o /boot/grubfont.pf2 /usr/share/fonts/TTF/DejaVuSansMono.ttf
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -134,6 +126,14 @@ if [[ "$7" == "1" ]] then
 fi
 sed -i "s/auth		include		system-auth/auth		sufficient	pam_unix.so try_first_pass likeauth nullok\nauth		sufficient	pam_fprintd.so\nauth		include		system-auth/" /etc/pam.d/sudo
 sed -i "s/auth      include   system-login/auth      sufficient pam_unix.so try_first_pass likeauth nullok\nauth      sufficient pam_fprintd.so\nauth      include    system-login/" /etc/pam.d/system-local-login
+
+echo "\n:: Disable suspend for sound device..\n"
+sed -i "s/load-module module-suspend-on-file/#load-module module-suspend-on-file/" /etc/pulse/default.pa
+cat <<EOM > /etc/modprobe.d/audio_disable_powersave.conf
+options snd_hda_intel power_save=0 power_save_controller=N
+EOM
+sed -i "s/#SOUND_POWER_SAVE_ON_AC=0/SOUND_POWER_SAVE_ON_AC=0/" /etc/tlp.conf
+sed -i "s/#SOUND_POWER_SAVE_ON_BAT=1/SOUND_POWER_SAVE_ON_BAT=0/" /etc/tlp.conf
 
 echo "\n:: Enabling services...\n"
 if [[ "$7" == "1" ]] then
