@@ -184,6 +184,7 @@ elif [[ "$7" == "2" ]] then
     gsettings set org.gnome.desktop.peripherals.touchpad speed 0.44852941176470584
     gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+    gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'firefox.desktop', 'chromium.desktop', 'org.gnome.Terminal.desktop']"
     gnome-extensions enable launch-new-instance@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
