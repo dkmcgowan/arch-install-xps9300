@@ -46,6 +46,9 @@ sed -i "s/GRUB_TIMEOUT_STYLE=menu/GRUB_TIMEOUT_STYLE=hidden/" /etc/default/grub
 
 echo "\n:: Disable suspend for sound device..\n"
 sed -i "s/load-module module-suspend-on-file/#load-module module-suspend-on-file/" /etc/pulse/default.pa
+cat <<EOM > /etc/modprobe.d/audio_disable_powersave.conf
+options snd_hda_intel power_save=0 power_save_controller=N
+EOM
 
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 grub-mkfont -s 30 -o /boot/grubfont.pf2 /usr/share/fonts/TTF/DejaVuSansMono.ttf
