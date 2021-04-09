@@ -52,14 +52,15 @@ echo "\n:: Creating system user and configuration...\n"
 useradd -m -G wheel,lp,rfkill,log,adm,sys,systemd-journal,uucp -s /bin/zsh $4
 echo $4:$5 | chpasswd
 
-if [[ "$7" == "1" ]] then
-    su $4 -c "mkdir -p /home/$4/Pictures"
-    cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/
-elif [[ "$7" == "2" ]] then
-    su $4 -c "mkdir -p /home/$4/.local/share/backgrounds"
-    cp /arch-install-xps9300/backgrounds/* /home/$4/.local/share/backgrounds/
-fi
-chown -R $4:$4 /home/$4/
+# Commenting out copying backgrounds
+#if [[ "$7" == "1" ]] then
+#    su $4 -c "mkdir -p /home/$4/Pictures"
+#    cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/
+#elif [[ "$7" == "2" ]] then
+#    su $4 -c "mkdir -p /home/$4/.local/share/backgrounds"
+#    cp /arch-install-xps9300/backgrounds/* /home/$4/.local/share/backgrounds/
+#fi
+#chown -R $4:$4 /home/$4/
 
 cat <<EOM > /home/$4/.vimrc
 source \$VIMRUNTIME/defaults.vim
@@ -94,8 +95,8 @@ if [[ "$7" == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/mint-themes.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
 elif [[ "$7" == "2" ]] then
-    su $4 -c "git clone https://aur.archlinux.org/gnome-shell-extension-appindicator.git"
-    su $4 -c "git clone https://aur.archlinux.org/gnome-shell-extension-dash-to-dock.git"
+    #su $4 -c "git clone https://aur.archlinux.org/gnome-shell-extension-appindicator.git"
+    #su $4 -c "git clone https://aur.archlinux.org/gnome-shell-extension-dash-to-dock.git"
 fi
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $4 -c \"makepkg -sri --noconfirm\"" \;
 
@@ -181,16 +182,16 @@ if [[ "$7" == "1" ]] then
     gsettings set org.nemo.desktop home-icon-visible true
     gsettings set org.cinnamon.settings-daemon.plugins.power lock-on-suspend true
 elif [[ "$7" == "2" ]] then
-    gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
+    #gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
     gsettings set org.gnome.desktop.interface clock-format '12h'
     gsettings set org.gnome.desktop.interface show-battery-percentage true
     gsettings set org.gnome.desktop.peripherals.touchpad speed 0.44852941176470584
     gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-    gsettings set org.gnome.desktop.background picture-uri 'file:///home/$4/.local/share/backgrounds/tower_night_city_architecture_3840x2400.jpg'
-    gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
-    gnome-extensions enable dash-to-dock@micxgx.gmail.com
+    #gsettings set org.gnome.desktop.background picture-uri 'file:///home/$4/.local/share/backgrounds/tower_night_city_architecture_3840x2400.jpg'
+    #gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
+    #gnome-extensions enable dash-to-dock@micxgx.gmail.com
     gnome-extensions enable launch-new-instance@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
