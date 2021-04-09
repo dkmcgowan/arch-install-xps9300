@@ -20,11 +20,11 @@ fi
 echo "\n:: Arch installation for Dell XPS 9300"
 echo ":: Choose DM/DE"
 echo "\n:: 1. LightDM/Cinnamon    2. GDM/GNOME    3. Exit\n"
-read "de?:: Enter a number (default=1): "
+read "de?:: Enter a number (default=2): "
 echo
 
 if [[ "$de" == "" ]] then
-  de="1"
+  de="2"
 fi
 
 if [[ "$de" == "3" ]] then
