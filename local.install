@@ -183,7 +183,7 @@ elif [[ "$7" == "2" ]] then
     gsettings set org.gnome.desktop.interface clock-format '12h'
     gsettings set org.gnome.desktop.interface clock-show-weekday true
     gsettings set org.gnome.desktop.interface show-battery-percentage true
-    gsettings set org.gnome.desktop.peripherals.touchpad speed 0.44852941176470584
+    gsettings set org.gnome.desktop.peripherals.touchpad speed 0.38000000000000000
     gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
     gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'firefox.desktop', 'chromium.desktop', 'org.gnome.Terminal.desktop']"
