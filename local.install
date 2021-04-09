@@ -139,7 +139,7 @@ if [[ "$7" == "1" ]] then
 elif [[ "$7" == "2" ]] then
     systemctl enable gdm.service
     sudo -u gdm dbus-launch gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-    sed -i "s/auth       [success=1 default=ignore]  pam_fprintd.so/#auth       [success=1 default=ignore]  pam_fprintd.so\nauth       [success=done default=bad]  pam_fprintd.so/" /etc/pam.d/gdm-fingerprint
+    sed -i "s/auth       \[success=1 default=ignore\]  pam_fprintd.so/#auth       \[success=1 default=ignore\]  pam_fprintd.so\nauth       \[success=done default=bad\]  pam_fprintd.so/" /etc/pam.d/gdm-fingerprint
 fi
 systemctl enable NetworkManager.service
 systemctl enable cups.service
