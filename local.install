@@ -49,6 +49,8 @@ sed -i "s/load-module module-suspend-on-file/#load-module module-suspend-on-file
 cat <<EOM > /etc/modprobe.d/audio_disable_powersave.conf
 options snd_hda_intel power_save=0 power_save_controller=N
 EOM
+sed -i "s/#SOUND_POWER_SAVE_ON_AC=0/SOUND_POWER_SAVE_ON_AC=0/" /etc/tlp.conf
+sed -i "s/#SOUND_POWER_SAVE_ON_BAT=1/SOUND_POWER_SAVE_ON_BAT=0/" /etc/tlp.conf
 
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 grub-mkfont -s 30 -o /boot/grubfont.pf2 /usr/share/fonts/TTF/DejaVuSansMono.ttf
