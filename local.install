@@ -84,9 +84,6 @@ if [[ "$7" == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-themes.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-y-icons.git"
-elif [[ "$7" == "2" ]] then
-    #su $4 -c "git clone https://aur.archlinux.org/gnome-shell-extension-appindicator.git"
-    #su $4 -c "git clone https://aur.archlinux.org/gnome-shell-extension-dash-to-dock.git"
 fi
 find . -maxdepth 1 -mindepth 1 -type d -exec zsh -c "cd '{}' && su $4 -c \"makepkg -sri --noconfirm\"" \;
 
@@ -127,8 +124,8 @@ if [[ "$7" == "1" ]] then
     sed -i "s/auth       include      system-auth/auth       sufficient   pam_unix.so try_first_pass likeauth nullok\nauth       sufficient   pam_fprintd.so\nauth       include      system-auth/" /etc/pam.d/cinnamon-screensaver
     sed -i "s/auth        include     system-login/auth        sufficient  pam_unix.so try_first_pass likeauth nullok\nauth        sufficient  pam_fprintd.so\nauth        include     system-login/" /etc/pam.d/lightdm
 fi
-#sed -i "s/auth		include		system-auth/auth		sufficient	pam_unix.so try_first_pass likeauth nullok\nauth		sufficient	pam_fprintd.so\nauth		include		system-auth/" /etc/pam.d/sudo
-#sed -i "s/auth      include   system-login/auth      sufficient pam_unix.so try_first_pass likeauth nullok\nauth      sufficient pam_fprintd.so\nauth      include    system-login/" /etc/pam.d/system-local-login
+sed -i "s/auth		include		system-auth/auth		sufficient	pam_unix.so try_first_pass likeauth nullok\nauth		sufficient	pam_fprintd.so\nauth		include		system-auth/" /etc/pam.d/sudo
+sed -i "s/auth      include   system-login/auth      sufficient pam_unix.so try_first_pass likeauth nullok\nauth      sufficient pam_fprintd.so\nauth      include    system-login/" /etc/pam.d/system-local-login
 
 echo "\n:: Enabling services...\n"
 if [[ "$7" == "1" ]] then
@@ -172,16 +169,12 @@ if [[ "$7" == "1" ]] then
     gsettings set org.nemo.desktop home-icon-visible true
     gsettings set org.cinnamon.settings-daemon.plugins.power lock-on-suspend true
 elif [[ "$7" == "2" ]] then
-    #gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
     gsettings set org.gnome.desktop.interface clock-format '12h'
     gsettings set org.gnome.desktop.interface show-battery-percentage true
     gsettings set org.gnome.desktop.peripherals.touchpad speed 0.44852941176470584
     gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-    #gsettings set org.gnome.desktop.background picture-uri 'file:///home/$4/.local/share/backgrounds/tower_night_city_architecture_3840x2400.jpg'
-    #gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
-    #gnome-extensions enable dash-to-dock@micxgx.gmail.com
     gnome-extensions enable launch-new-instance@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
@@ -201,8 +194,8 @@ if [[ "$6" != "na" ]] then
   hp-setup -iax $6
 fi
 
-#echo "\n:: Setting up fingerprint reader...\n"
-#fprintd-enroll
+echo "\n:: Setting up fingerprint reader...\n"
+fprintd-enroll
 
 read "?Installation complete... "
 rm /home/$4/.config/autostart/installer.desktop
