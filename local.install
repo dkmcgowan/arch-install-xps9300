@@ -52,16 +52,6 @@ echo "\n:: Creating system user and configuration...\n"
 useradd -m -G wheel,lp,rfkill,log,adm,sys,systemd-journal,uucp -s /bin/zsh $4
 echo $4:$5 | chpasswd
 
-# Commenting out copying backgrounds
-#if [[ "$7" == "1" ]] then
-#    su $4 -c "mkdir -p /home/$4/Pictures"
-#    cp /arch-install-xps9300/backgrounds/* /home/$4/Pictures/
-#elif [[ "$7" == "2" ]] then
-#    su $4 -c "mkdir -p /home/$4/.local/share/backgrounds"
-#    cp /arch-install-xps9300/backgrounds/* /home/$4/.local/share/backgrounds/
-#fi
-#chown -R $4:$4 /home/$4/
-
 cat <<EOM > /home/$4/.vimrc
 source \$VIMRUNTIME/defaults.vim
 set clipboard=unnamedplus
