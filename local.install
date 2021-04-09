@@ -199,6 +199,9 @@ elif [[ "$7" == "2" ]] then
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ categories "['Office']"
     gsettings set org.gnome.shell.weather locations "[<(uint32 2, <('Atlanta', 'KATL', true, [(0.58713361238621309, -1.4735281501968716)], [(0.5890310819891037, -1.4728481350137095)])>)>]"
     gsettings set org.gnome.Weather locations "[<(uint32 2, <('Atlanta', 'KATL', true, [(0.58713361238621309, -1.4735281501968716)], [(0.5890310819891037, -1.4728481350137095)])>)>]"
+    
+    # Need to disable until we enroll a fingerprint, bug causes auth issue, but this is too late
+    #gsettings set org.gnome.login-screen enable-fingerprint-authentication false
 fi
 
 currentprofile=\$(gsettings get org.gnome.Terminal.ProfilesList default)
