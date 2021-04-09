@@ -102,8 +102,6 @@ echo "\n:: Installing package dropbox...\n"
 cd /home/$4/packages
 su $4 -c "git clone https://aur.archlinux.org/dropbox.git"
 cd /home/$4/packages/dropbox
-#skipping pgp check, it was manually verified 9/10/20, keyserver timing out
-#su $4 -c "gpg --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E"
 su $4 -c "makepkg -sri --skippgpcheck --noconfirm"
 cd /home/$4/packages
 if [[ "$7" == "1" ]] then
@@ -139,8 +137,6 @@ if [[ "$7" == "1" ]] then
 elif [[ "$7" == "2" ]] then
     systemctl enable gdm.service
     sudo -u gdm dbus-launch gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-    # Fixes an issue with fingerprint reader in GMD with no fingerprints enrolled, login fails, this will most likely be fixed upstream soon
-    #sed -i "s/auth       \[success=1 default=ignore\]  pam_fprintd.so/#auth       \[success=1 default=ignore\]  pam_fprintd.so\nauth       \[success=done default=bad\]  pam_fprintd.so/" /etc/pam.d/gdm-fingerprint
 fi
 systemctl enable NetworkManager.service
 systemctl enable cups.service
@@ -189,18 +185,18 @@ elif [[ "$7" == "2" ]] then
     gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'firefox.desktop', 'chromium.desktop', 'org.gnome.Terminal.desktop']"
     gsettings set org.gnome.shell app-picker-layout "[{'org.gnome.Extensions.desktop': <{'position': <0>}>, 'gnome-control-center.desktop': <{'position': <1>}>, 'Office': <{'position': <2>}>, 'org.gnome.Calculator.desktop': <{'position': <3>}>, 'dropbox.desktop': <{'position': <4>}>, 'org.gnome.gedit.desktop': <{'position': <5>}>, 'gvim.desktop': <{'position': <6>}>, 'Utilities': <{'position': <7>}>, 'org.gnome.Cheese.desktop': <{'position': <8>}>, 'hplip.desktop': <{'position': <9>}>, 'ca.desrt.dconf-editor.desktop': <{'position': <10>}>, 'code-oss.desktop': <{'position': <11>}>, 'org.remmina.Remmina.desktop': <{'position': <12>}>, 'rhythmbox.desktop': <{'position': <13>}>, 'fr.handbrake.ghb.desktop': <{'position': <14>}>, 'vlc.desktop': <{'position': <15>}>, 'simple-scan.desktop': <{'position': <16>}>, 'gimp.desktop': <{'position': <17>}>, 'htop.desktop': <{'position': <18>}>, 'org.gnome.Photos.desktop': <{'position': <19>}>, 'org.gnome.Weather.desktop': <{'position': <20>}>, 'gnome-system-monitor.desktop': <{'position': <21>}>}, {'vim.desktop': <{'position': <0>}>, 'org.gtk.IconBrowser4.desktop': <{'position': <1>}>, 'cups.desktop': <{'position': <2>}>, 'org.gtk.PrintEditor4.desktop': <{'position': <3>}>, 'qv4l2.desktop': <{'position': <4>}>, 'qvidcap.desktop': <{'position': <5>}>, 'org.gtk.WidgetFactory4.desktop': <{'position': <6>}>, 'org.gnome.Software.desktop': <{'position': <7>}>, 'org.gtk.Demo4.desktop': <{'position': <8>}>, 'lstopo.desktop': <{'position': <9>}>, 'electron11.desktop': <{'position': <10>}>, 'org.gnome.Documents.desktop': <{'position': <11>}>, 'hp-uiscan.desktop': <{'position': <12>}>, 'bvnc.desktop': <{'position': <13>}>, 'bssh.desktop': <{'position': <14>}>, 'avahi-discover.desktop': <{'position': <15>}>}]"
     gsettings set org.gnome.desktop.wm.preferences button-layout "'appmenu:minimize,maximize,close'"
-    gnome-extensions enable launch-new-instance@gnome-shell-extensions.gcampax.github.com
-    gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
-    gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
-    gnome-extensions enable workspace-indicator@gnome-shell-extensions.gcampax.github.com
-    gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
-    #gnome-extensions enable window-list@gnome-shell-extensions.gcampax.github.com
     gsettings set org.gnome.desktop.app-folders folder-children "['Utilities', 'YaST', 'Office']"
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ name 'Office'
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ translate true
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ categories "['Office']"
     gsettings set org.gnome.shell.weather locations "[<(uint32 2, <('Atlanta', 'KATL', true, [(0.58713361238621309, -1.4735281501968716)], [(0.5890310819891037, -1.4728481350137095)])>)>]"
     gsettings set org.gnome.Weather locations "[<(uint32 2, <('Atlanta', 'KATL', true, [(0.58713361238621309, -1.4735281501968716)], [(0.5890310819891037, -1.4728481350137095)])>)>]"
+    
+    gnome-extensions enable launch-new-instance@gnome-shell-extensions.gcampax.github.com
+    gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
+    gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
+    gnome-extensions enable workspace-indicator@gnome-shell-extensions.gcampax.github.com
+    gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
 fi
 
 currentprofile=\$(gsettings get org.gnome.Terminal.ProfilesList default)
