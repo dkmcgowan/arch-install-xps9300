@@ -147,7 +147,7 @@ elif [[ "$7" == "2" ]] then
     systemctl enable gdm.service
 fi
 systemctl enable NetworkManager.service
-systemctl enable org.cups.cupsd.service
+systemctl enable cups.service
 systemctl enable bluetooth.service
 systemctl enable tlp.service
 systemctl enable lenovo_fix.service
