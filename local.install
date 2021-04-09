@@ -140,6 +140,7 @@ if [[ "$7" == "1" ]] then
     systemctl enable lightdm.service
 elif [[ "$7" == "2" ]] then
     systemctl enable gdm.service
+    sudo -u gdm dbus-launch gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
 fi
 systemctl enable NetworkManager.service
 systemctl enable cups.service
