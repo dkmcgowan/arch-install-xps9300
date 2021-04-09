@@ -191,8 +191,8 @@ elif [[ "$7" == "2" ]] then
     gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable workspace-indicator@gnome-shell-extensions.gcampax.github.com
-    gnome-extensions enable appindicator@rgcjonas.gmail.com
-    gnome-extensions enable window-list@gnome-shell-extension.gcampax.github.com
+    gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
+    gnome-extensions enable window-list@gnome-shell-extensions.gcampax.github.com
 fi
 
 currentprofile=\$(gsettings get org.gnome.Terminal.ProfilesList default)
