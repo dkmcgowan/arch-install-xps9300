@@ -194,7 +194,7 @@ elif [[ "$7" == "2" ]] then
     gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable workspace-indicator@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
-    gnome-extensions enable window-list@gnome-shell-extensions.gcampax.github.com
+    #gnome-extensions enable window-list@gnome-shell-extensions.gcampax.github.com
     gsettings set org.gnome.desktop.app-folders folder-children "['Utilities', 'YaST', 'Office']"
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ name 'Office'
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ translate true
