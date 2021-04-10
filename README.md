@@ -60,3 +60,4 @@ These are notes for things on my default installation that I did not include yet
 * Install slack and zoom packages
 * Set system sounds volume in gnome
 * Gnome, set hide all normal windows from disabled to Super+D
+* Add MOZ_USE_XINPUT2 DEFAULT=1 to /etc/security/pam_env.conf and then logout or reboot your system
