@@ -190,8 +190,6 @@ elif [[ "$7" == "2" ]] then
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ name 'Office'
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ translate true
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ categories "['Office']"
-    gsettings set org.gnome.shell.weather locations "[<(uint32 2, <('Atlanta', 'KATL', true, [(0.58713361238621309, -1.4735281501968716)], [(0.5890310819891037, -1.4728481350137095)])>)>]"
-    gsettings set org.gnome.Weather locations "[<(uint32 2, <('Atlanta', 'KATL', true, [(0.58713361238621309, -1.4735281501968716)], [(0.5890310819891037, -1.4728481350137095)])>)>]"
     gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled false
     
     gnome-extensions enable launch-new-instance@gnome-shell-extensions.gcampax.github.com
