@@ -123,13 +123,15 @@ if [[ "$7" == "1" ]] then
     sed -i "s/auth        include     system-login/auth        sufficient  pam_unix.so try_first_pass likeauth nullok\nauth        sufficient  pam_fprintd.so\nauth        include     system-login/" /etc/pam.d/lightdm
 fi
 
-echo "\n:: Disable suspend for sound device..\n"
+echo "\n:: Modify power / suspend settings..\n"
 sed -i "s/load-module module-suspend-on-file/#load-module module-suspend-on-file/" /etc/pulse/default.pa
 cat <<EOM > /etc/modprobe.d/audio_disable_powersave.conf
 options snd_hda_intel power_save=0 power_save_controller=N
 EOM
 sed -i "s/#SOUND_POWER_SAVE_ON_AC=0/SOUND_POWER_SAVE_ON_AC=0/" /etc/tlp.conf
 sed -i "s/#SOUND_POWER_SAVE_ON_BAT=1/SOUND_POWER_SAVE_ON_BAT=0/" /etc/tlp.conf
+sed -i "s/#USB_AUTOSUSPEND=1/USB_AUTOSUSPEND=0/" /etc/tlp.conf
+sed -i "s/#USB_BLACKLIST=\"1111:2222 3333:4444\"/USB_BLACKLIST=\"0bda:8153\"/" /etc/tlp.conf
 
 echo "\n:: Enabling services...\n"
 if [[ "$7" == "1" ]] then
