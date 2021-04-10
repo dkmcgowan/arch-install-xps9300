@@ -52,3 +52,4 @@ These are notes for things on my default installation that I did not include yet
 * Configure name/email with git
 * Authorize and set up dropbox (selective sync)
 * Set Firefox default zoom to 120%
+* Set Weather City
