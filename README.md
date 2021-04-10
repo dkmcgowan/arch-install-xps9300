@@ -55,3 +55,4 @@ These are notes for things on my default installation that I did not include yet
 * Set Weather City
 * Enable Search in Activities for Weather
 * Make default browser/web Firefox
+* Set up VPN
