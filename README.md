@@ -57,7 +57,7 @@ These are notes for things on my default installation that I did not include yet
 * Make default browser/web Firefox
 * Set up VPN
 * Enable location services in gnome settings
-* Install slack and zoom packages
+* Install slack and zoom packages, move them to first page of apps in activities / app view
 * Set system sounds volume in gnome
 * Gnome, set hide all normal windows from disabled to Super+D
 * Add MOZ_USE_XINPUT2 DEFAULT=1 to /etc/security/pam_env.conf and then logout or reboot your system
