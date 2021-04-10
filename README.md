@@ -59,3 +59,4 @@ These are notes for things on my default installation that I did not include yet
 * Enable location services in gnome settings
 * Install slack and zoom packages
 * Set system sounds volume in gnome
+* Gnome, set hide all normal windows from disabled to Super+D
