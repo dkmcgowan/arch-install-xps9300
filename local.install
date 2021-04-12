@@ -57,7 +57,7 @@ if [[ "$7" == "1" ]] then
     sed -i "s/#greeter-session=example-gtk-gnome/greeter-session=lightdm-slick-greeter/" /etc/lightdm/lightdm.conf
 elif [[ "$7" == "2" ]] then
     echo "\n:: Installing GNOME and GDM...\n"
-    pacman -Syu xorg gdm gnome-shell gnome-shell-extensions gnome-session gnome-menus gnome-settings-daemon gnome-control-center gnome-software gnome-tweaks gedit evince gnome-backgrounds gnome-documents mutter nautilus nautilus-share sushi gnome-shell-extension-appindicator gnome-disk-utility gnome-photos --noconfirm
+    pacman -Syu xorg gdm gnome-shell gnome-shell-extensions gnome-session gnome-menus gnome-settings-daemon gnome-control-center gnome-calendar gnome-software gnome-tweaks gedit evince gnome-backgrounds gnome-documents mutter nautilus nautilus-share sushi gnome-shell-extension-appindicator gnome-disk-utility gnome-photos --noconfirm
 fi
 
 echo "\n:: Installing additional packages (official)...\n"
