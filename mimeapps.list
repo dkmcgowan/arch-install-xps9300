@@ -22,6 +22,10 @@ image/svg+xml=org.gnome.eog.desktop
 image/svg+xml-compressed=org.gnome.eog.desktop
 image/vnd.wap.wbmp=org.gnome.eog.desktop
 image/x-icns=org.gnome.eog.desktop
+x-scheme-handler/http=firefox.desktop
+text/html=firefox.desktop
+application/xhtml+xml=firefox.desktop
+x-scheme-handler/https=firefox.desktop
 
 [Added Associations]
 image/bmp=org.gnome.eog.desktop;
