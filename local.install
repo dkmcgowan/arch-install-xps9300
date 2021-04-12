@@ -187,7 +187,7 @@ elif [[ "$7" == "2" ]] then
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
     gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'firefox.desktop', 'chromium.desktop', 'org.gnome.Terminal.desktop']"
     gsettings set org.gnome.shell app-picker-layout "[{'org.gnome.Extensions.desktop': <{'position': <0>}>, 'gnome-control-center.desktop': <{'position': <1>}>, 'Office': <{'position': <2>}>, 'org.gnome.Calculator.desktop': <{'position': <3>}>, 'dropbox.desktop': <{'position': <4>}>, 'org.gnome.gedit.desktop': <{'position': <5>}>, 'gvim.desktop': <{'position': <6>}>, 'Utilities': <{'position': <7>}>, 'org.gnome.Cheese.desktop': <{'position': <8>}>, 'hplip.desktop': <{'position': <9>}>, 'ca.desrt.dconf-editor.desktop': <{'position': <10>}>, 'code-oss.desktop': <{'position': <11>}>, 'org.remmina.Remmina.desktop': <{'position': <12>}>, 'rhythmbox.desktop': <{'position': <13>}>, 'fr.handbrake.ghb.desktop': <{'position': <14>}>, 'vlc.desktop': <{'position': <15>}>, 'simple-scan.desktop': <{'position': <16>}>, 'gimp.desktop': <{'position': <17>}>, 'htop.desktop': <{'position': <18>}>, 'org.gnome.Photos.desktop': <{'position': <19>}>, 'org.gnome.Weather.desktop': <{'position': <20>}>, 'gnome-system-monitor.desktop': <{'position': <21>}>}, {'vim.desktop': <{'position': <0>}>, 'org.gtk.IconBrowser4.desktop': <{'position': <1>}>, 'cups.desktop': <{'position': <2>}>, 'org.gtk.PrintEditor4.desktop': <{'position': <3>}>, 'qv4l2.desktop': <{'position': <4>}>, 'qvidcap.desktop': <{'position': <5>}>, 'org.gtk.WidgetFactory4.desktop': <{'position': <6>}>, 'org.gnome.Software.desktop': <{'position': <7>}>, 'org.gtk.Demo4.desktop': <{'position': <8>}>, 'lstopo.desktop': <{'position': <9>}>, 'electron11.desktop': <{'position': <10>}>, 'org.gnome.Documents.desktop': <{'position': <11>}>, 'hp-uiscan.desktop': <{'position': <12>}>, 'bvnc.desktop': <{'position': <13>}>, 'bssh.desktop': <{'position': <14>}>, 'avahi-discover.desktop': <{'position': <15>}>}]"
-    gsettings set org.gnome.desktop.wm.preferences button-layout "'appmenu:minimize,maximize,close'"
+    #gsettings set org.gnome.desktop.wm.preferences button-layout "'appmenu:minimize,maximize,close'"
     gsettings set org.gnome.desktop.app-folders folder-children "['Utilities', 'YaST', 'Office']"
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ name 'Office'
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ translate true
@@ -195,7 +195,7 @@ elif [[ "$7" == "2" ]] then
     gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
     
     gnome-extensions enable launch-new-instance@gnome-shell-extensions.gcampax.github.com
-    gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
+    #gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable workspace-indicator@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
@@ -204,7 +204,7 @@ fi
 currentprofile=\$(gsettings get org.gnome.Terminal.ProfilesList default)
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-rows 28
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ default-size-columns 120
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ palette "['rgb(7,54,66)', 'rgb(220,50,47)', 'rgb(133,153,0)', 'rgb(181,137,0)', 'rgb(38,139,210)', 'rgb(211,54,130)', 'rgb(42,161,152)', 'rgb(238,232,213)', 'rgb(0,43,54)', 'rgb(203,75,22)', 'rgb(88,110,117)', 'rgb(101,123,131)', 'rgb(131,148,150)', 'rgb(108,113,196)', 'rgb(147,161,161)', 'rgb(253,246,227)']"
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:\${currentprofile:1:-1}/ palette "['rgb(23,20,33)', 'rgb(192,28,40)', 'rgb(38,162,105)', 'rgb(162,115,76)', 'rgb(18,72,139)', 'rgb(163,71,186)', 'rgb(42,161,179)', 'rgb(208,207,204)', 'rgb(94,92,100)', 'rgb(246,97,81)', 'rgb(51,209,122)', 'rgb(233,173,12)', 'rgb(42,123,222)', 'rgb(192,97,203)', 'rgb(51,199,222)', 'rgb(255,255,255)']"
 
 echo "\n:: Connecting to the internet...\n"
 nmcli device wifi connect $1 password $2
