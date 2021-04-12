@@ -196,7 +196,7 @@ elif [[ "$7" == "2" ]] then
     
     #gnome-extensions enable launch-new-instance@gnome-shell-extensions.gcampax.github.com
     #gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
-    gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
+    #gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
     #gnome-extensions enable workspace-indicator@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
 fi
