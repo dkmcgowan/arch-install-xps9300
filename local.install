@@ -79,6 +79,8 @@ echo "\n:: Installing additional packages (AUR)...\n"
 su $4 -c "mkdir /home/$4/packages"
 
 cd /home/$4/packages
+su $4 -c "git clone https://aur.archlinux.org/zoom.git"
+su $4 -c "git clone https://aur.archlinux.org/slack-desktop.git"
 if [[ "$7" == "1" ]] then
     su $4 -c "git clone https://aur.archlinux.org/lightdm-slick-greeter.git"
     su $4 -c "git clone https://aur.archlinux.org/mint-artwork-cinnamon.git"
