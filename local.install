@@ -146,7 +146,6 @@ systemctl enable NetworkManager.service
 systemctl enable cups.service
 systemctl enable bluetooth.service
 systemctl enable tlp.service
-systemctl enable lenovo_fix.service
 systemctl enable systemd-timesyncd
 
 echo "\n:: Enable touchscreen for Firefox...\n"
