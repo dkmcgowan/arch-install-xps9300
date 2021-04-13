@@ -149,6 +149,9 @@ systemctl enable tlp.service
 systemctl enable lenovo_fix.service
 systemctl enable systemd-timesyncd
 
+echo "\n:: Enable touchscreen for Firefox...\n"
+echo 'MOZ_USE_XINPUT2 DEFAULT=1' >> /etc/security/pam_env.conf
+
 echo "\n:: Generating final script...\n"
 cat <<EOM > /home/$4/final.install
 #!/bin/zsh
