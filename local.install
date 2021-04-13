@@ -194,7 +194,6 @@ elif [[ "$7" == "2" ]] then
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ name 'Office'
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ translate true
     gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Office/ categories "['Office']"
-    gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Utilities/ categories "['X-GNOME-Utilities','AudioVideo']"
     gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
     
     #gnome-extensions enable launch-new-instance@gnome-shell-extensions.gcampax.github.com
