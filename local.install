@@ -152,6 +152,10 @@ systemctl enable systemd-timesyncd
 echo "\n:: Enable touchscreen for Firefox...\n"
 echo 'MOZ_USE_XINPUT2 DEFAULT=1' >> /etc/security/pam_env.conf
 
+su $4 -c "mkdir -p /home/$4/.local/share/applications"
+cp /arch-install-xps9300/.local/share/applications/* /home/$4/.local/share/applications/
+chown -R $4:$4 /home/$4/
+
 echo "\n:: Generating final script...\n"
 cat <<EOM > /home/$4/final.install
 #!/bin/zsh
