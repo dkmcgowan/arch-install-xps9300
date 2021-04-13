@@ -55,6 +55,5 @@ These are notes for things on my default installation that I did not include yet
 * Set up VPN
 * Set system sounds volume in gnome
 * Gnome, set hide all normal windows from disabled to Super+D
-* Add MOZ_USE_XINPUT2 DEFAULT=1 to /etc/security/pam_env.conf and then logout or reboot your system
 * Update terminal pallete to GNOME with highlights for bold checked
 * comment out homed reference in system_auth pam.d
