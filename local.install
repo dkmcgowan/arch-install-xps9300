@@ -204,6 +204,8 @@ elif [[ "$7" == "2" ]] then
     #gnome-extensions enable drive-menu@gnome-shell-extensions.gcampax.github.com
     #gnome-extensions enable workspace-indicator@gnome-shell-extensions.gcampax.github.com
     gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
+    
+    gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
 fi
 
 currentprofile=\$(gsettings get org.gnome.Terminal.ProfilesList default)
