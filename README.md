@@ -54,5 +54,4 @@ These are notes for things on my default installation that I did not include yet
 * Set Firefox default zoom to 110%
 * Set up VPN
 * Set system sounds volume in gnome
-* Update terminal pallete to GNOME with highlights for bold checked
 * comment out homed reference in system_auth pam.d
