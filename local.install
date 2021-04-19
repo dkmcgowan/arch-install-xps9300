@@ -61,7 +61,7 @@ elif [[ "$7" == "2" ]] then
 fi
 
 echo "\n:: Installing additional packages (official)...\n"
-pacman -Syu alsa-utils cheese nano firefox chromium eog gthumb networkmanager gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina freerdp libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 cups ttf-dejavu imagemagick tlp i7z htop glances s-tui gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb bluez bluez-utils gnome-system-monitor --noconfirm
+pacman -Syu alsa-utils nfs-utils cheese nano firefox chromium eog gthumb networkmanager gnome-screenshot gnome-keyring gnome-terminal gnome-logs gnome-calculator simple-scan vlc gimp vscode remmina freerdp libreoffice-still handbrake rhythmbox dconf-editor hplip python-pyqt5 cups ttf-dejavu imagemagick tlp i7z htop glances s-tui gvfs gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb bluez bluez-utils gnome-system-monitor --noconfirm
 
 echo "\n:: Setting up boot loader..\n"
 fs_uuid=$(blkid -o value -s UUID /dev/nvme0n1p2)
