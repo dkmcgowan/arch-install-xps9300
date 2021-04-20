@@ -54,3 +54,18 @@ These are notes for things on my default installation that I did not include yet
 * Set Firefox default zoom to 110%
 * Set up VPN
 * Set system sounds volume in gnome
+* Add dispatcher to disable wifi when ethernet is plugged in (/etc/NetworkManager/dispatcher.d/wlan_auto_toggle.sh", the interface name most likely will change for each install
+
+#!/bin/sh
+
+if [ "$1" = "enp0s13f0u3u2" ]; then
+    case "$2" in
+        up)
+            nmcli radio wifi off
+            ;;
+        down)
+            nmcli radio wifi on
+            ;;
+    esac
+fi
+
