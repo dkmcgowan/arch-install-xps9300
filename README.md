@@ -55,7 +55,7 @@ These are notes for things on my default installation that I did not include yet
 * Set up VPN
 * Set system sounds volume in gnome
 * Add dispatcher to disable wifi when ethernet is plugged in (/etc/NetworkManager/dispatcher.d/wlan_auto_toggle.sh", the interface name most likely will change for each install
-* Add packages wireguard-tools, openresolv, jq, networkmanager-open
+* Add packages wireguard-tools, openresolv, jq, networkmanager-open, wget
 * disable ipv6
 
 #!/bin/sh
